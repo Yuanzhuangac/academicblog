@@ -8,6 +8,11 @@ interests:
   - Mortality Modelling
   - Insurance Economics
 social:
+  - display:
+      header: false
+    link: zhuangyuanzyx@gmail.com
+    icon_pack: fab
+    icon: envelop
   - icon: github
     icon_pack: fab
     link: https://github.com/Yuanzhuangac
