@@ -2,7 +2,7 @@
 title: Yuan Zhuang
 role: "Associate of the Society of Actuaries (ASA)"
 avatar_filename: avatar.jpg
-bio: "I am a graduate student in School of Finance, Nankai University. My supervisor is Lianzeng Zhang. Don't hesitate to drop me an email if you want to corporate with me！"
+bio: "I am a graduate student in School of Finance, Nankai University. My supervisor is Lianzeng Zhang. Don't hesitate to drop me an email if you want to corporate with me!"
 interests:
   - Actuarial Data Science
   - Mortality Modelling
