@@ -5,7 +5,6 @@ date: 2022-10-24
 type: landing
 
 sections:
-  
   - block: about.biography
     id: about
     content:
@@ -13,6 +12,7 @@ sections:
       # Choose a user profile to display (a folder name within `content/authors/`)
       username: admin
   - block: collection
+    id: publication
     content:
       title: Recent Publications
       text: |-
@@ -52,10 +52,5 @@ sections:
     design:
       # Choose a layout view
       view: compact
-      columns: '2'
-  - block: tag_cloud
-    content:
-      title: Popular Topics
-    design:
       columns: '2'
 ---
