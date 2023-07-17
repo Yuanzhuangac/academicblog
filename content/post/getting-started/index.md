@@ -9,10 +9,10 @@ summary: Welcome. This is my first blog.
 projects: []
 
 # Date published
-date: '2023-07-10'
+date: '2023-07-10T00:00:00Z'
 
 # Date updated
-lastmod: '2023-07-10'
+lastmod: '2023-07-10T00:00:00Z'
 
 # Is this an unpublished draft?
 draft: false

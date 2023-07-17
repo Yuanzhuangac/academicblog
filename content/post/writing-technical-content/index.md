@@ -1,6 +1,6 @@
 ---
 title: Writing technical content in Markdown
-date: '2023-07-12'
+date: '2023-07-12T00:00:00Z'
 authors:
   - admin
 tags:
