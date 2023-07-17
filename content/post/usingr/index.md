@@ -453,6 +453,7 @@ legend("bottomleft", legend = c("95% CI: theoretical", "95% CI: simulated"),
 ![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-2.png)
 
 总之，对于任意的{{< math >}}$\hat{\kappa}_{n_y+m}${{< /math >}}，我们有：
+{{< math >}}
 $$
 \begin{aligned}
 \operatorname{Var}\left(\hat{\kappa}_{n_y+m}\right) & =\operatorname{Var}\left(m \hat{\mu}+\sum_{j=1}^m \epsilon_{n_y+j}\right) \\
@@ -460,7 +461,7 @@ $$
 & =m^2 \frac{\sigma^2}{n_y-1}+m \sigma^2
 \end{aligned}
 $$
-
+{{< /math >}}
 两种error加在一起，才是最终的标准误。
 
 
