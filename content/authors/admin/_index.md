@@ -1,11 +1,12 @@
 ---
 title: Yuan Zhuang
-role: ""
+role: "Associate of the Society of Actuaries (ASA)"
 avatar_filename: avatar.jpg
-bio: ""
+bio: "Hello World! "
 interests:
   - Actuarial Data Science
   - Mortality Modelling
+  - Insurance Economics
 social:
   - icon: github
     icon_pack: fab
