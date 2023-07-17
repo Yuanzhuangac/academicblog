@@ -26,7 +26,7 @@ education:
       year: ""
     - course: BSc in Actuarial Science
       institution: Southwestern University of Finance and Economics
-      year: 2
+      year: ""
 superuser: true
 status:
   icon: ☕️
