@@ -13,7 +13,7 @@ social:
     display:
       header: true
   - icon: cv
-    icon_pack: fab
+    icon_pack: ai
     link: uploads/resume.pdf
     display:
       header: true
