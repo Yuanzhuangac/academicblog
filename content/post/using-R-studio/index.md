@@ -138,7 +138,7 @@ $$\begin{aligned} \hat{\boldsymbol{\alpha}} & =\hat{\boldsymbol{\alpha}}\_R+\bar
 
 这是一个带漂移项的随机游走过程。为何要这么假设？可以看看我们估计出的*κ*<sub>*y*</sub>：
 
-![](Mortality-Prediction_files/figure-markdown_strict/unnamed-chunk-3-1.svg)
+![](Mortality-Prediction_files/figure-markdown_strict/unnamed-chunk-3-1.png)
 
 可以看出，*κ*<sub>*y*</sub>在每年下降，而刚才式中的*μ*就代表了这个下降，被称为**漂移参数**（drift
 parameter）。误差项*ϵ*<sub>*y*</sub>服从*N**o**r**m**a**l*(0,*σ*<sup>2</sup>)，在文献中通常被叫做innovations。现在目标就是估计*μ*和*σ*<sup>2</sup>。只需要做一次差分，就可以把这个模型估计出来：
