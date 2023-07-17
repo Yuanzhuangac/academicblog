@@ -1,14 +1,19 @@
 ---
 title: Display Jupyter Notebooks with Academic
-subtitle: Learn how to blog in Academic using Jupyter notebooks
-summary: Learn how to blog in Academic using Jupyter notebooks
+subtitle: Learn how to blog in Academic using Jupyter notebooks. This blog is written as a tutorial.
+summary: Learn how to blog in Academic using Jupyter notebooks. This blog is written as a tutorial.
 authors:
   - admin
-tags: []
-categories: []
+tags: 
+  - Python
+  - Markdown
+categories:
+  - Python
+  - Markdown
+  - Jupyter Notebook
 projects: []
-date: '2019-02-05T00:00:00Z'
-lastMod: '2019-09-05T00:00:00Z'
+date: '2023-07-13'
+lastMod: '2023-07-13'
 image:
   caption: ''
   focal_point: ''
@@ -54,7 +59,7 @@ In Jupter, choose _Markdown_ as the type of the first cell and wrap your Academi
 ```
 ---
 title: My post's title
-date: 2019-09-01
+date: 2023-07-13
 
 # Put any other Academic metadata here...
 ---
