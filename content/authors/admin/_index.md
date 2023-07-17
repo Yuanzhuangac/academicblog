@@ -1,5 +1,5 @@
 ---
-title: Yuan Zhuang 庄源
+title: Yuan Zhuang
 role: ""
 avatar_filename: avatar.jpg
 bio: ""
