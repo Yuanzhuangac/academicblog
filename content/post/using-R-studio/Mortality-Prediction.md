@@ -1,3 +1,22 @@
+---
+title: Import RMarkdown in Blogs
+date: 2023-07-18
+authors:
+  - admin
+tags:
+  - Wowchemy
+  - RMarkdown
+  - Markdown
+categories:
+  - Wowchemy
+  - Markdown
+  - RMarkdown 
+math: true
+image:
+  caption: ''
+  focal_point: ''
+---
+
 死亡率的预测一直是保险精算行业非常关注的事情。在前面的课中我们已经学习了如何使用Lee-Carter、CBD和二维P样条进行死亡率的拟合，但如何使用这些模型对未来的死亡率进行预测呢？下面我将分别使用之前学过的模型进行死亡率的预测。
 
     library(gnm) # 做Lee-Carter的相关包
