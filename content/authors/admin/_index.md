@@ -11,8 +11,8 @@ social:
   - display:
       header: false
     link: zhuangyuanzyx@gmail.com
-    icon_pack: fab
-    icon: email
+    icon_pack: far
+    icon: envelope
   - icon: github
     icon_pack: fab
     link: https://github.com/Yuanzhuangac
