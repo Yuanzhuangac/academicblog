@@ -31,9 +31,9 @@ image:
 authors:
   - admin
 
-tags:[]
+tags: []
 
-categories:[]
+categories: []
 ---
 
 ```python
