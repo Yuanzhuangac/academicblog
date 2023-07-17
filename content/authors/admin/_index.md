@@ -1,7 +1,7 @@
 ---
 title: Yuan Zhuang 庄源
 role: ""
-avatar_filename: img_8259.jpg
+avatar_filename: avatar.jpg
 bio: ""
 interests:
   - Actuarial Data Science
