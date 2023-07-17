@@ -1,8 +1,8 @@
 ---
 title: Yuan Zhuang
-role: "Associate of the Society of Actuaries (ASA)"
+role: Associate of the Society of Actuaries (ASA)
 avatar_filename: avatar.jpg
-bio: "I am a graduate student in School of Finance, Nankai University. My supervisor is Lianzeng Zhang. Don't hesitate to drop me an email if you want to corporate with me!"
+bio: ""
 interests:
   - Actuarial Data Science
   - Mortality Modelling
@@ -25,10 +25,10 @@ education:
   courses:
     - course: M.Ec in Actuarial Science
       institution: Nankai University
-      year: "2022-"
+      year: 2022-
     - course: BSc in Actuarial Science
       institution: Southwestern University of Finance and Economics
-      year: "2018-2022"
+      year: 2018-2022
 superuser: true
 status:
   icon: ☕️
@@ -37,3 +37,4 @@ highlight_name: true
 first_name: Yuan
 email: zhuangyuanzyx@163.com
 ---
+I am a graduate student in School of Finance, Nankai University. My supervisor is Lianzeng Zhang. Don't hesitate to drop me an email if you want to corporate with me!
