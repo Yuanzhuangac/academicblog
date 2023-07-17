@@ -93,9 +93,9 @@ n.y <-  ncol(Dth)
 
 Lee-Carter模型同时对年龄和时间这两个影响死亡率的因素进行建模，相关假设如下：
 
-$$\log \left(\mu_{x+1 / 2, y+1 / 2}\right)=\alpha_x+\beta_x \kappa_y, x=x_1, \ldots, x_{n_x}, y=y_1, \ldots, y_{n_y}$$
+{{< math >}}$$\log \left(\mu_{x+1 / 2, y+1 / 2}\right)=\alpha_x+\beta_x \kappa_y, x=x_1, \ldots, x_{n_x}, y=y_1, \ldots, y_{n_y}$${{< /math >}}
 
-这里，$x$表示的是不同的年龄，$y$表示的是不同的年份。想要预测未来年份的死亡率，只需要预测$\kappa_y$即可，因为$\alpha_x$和$\beta_x$只跟年龄有关，跟年份无关。
+这里，{{< math >}}$x${{< /math >}}表示的是不同的年龄，{{< math >}}$y${{< /math >}}表示的是不同的年份。想要预测未来年份的死亡率，只需要预测{{< math >}}$\kappa_y${{< /math >}}即可，因为{{< math >}}$\alpha_x${{< /math >}}和{{< math >}}$\beta_x${{< /math >}}只跟年龄有关，跟年份无关。
 
 不管怎么说，让我们先使用`gnm()`，用极大似然法拟合一个模型：
 
@@ -124,11 +124,11 @@ LC.Male <-  gnm(Dth.V ~ -1 + Age.F + Mult(Age.F, Year.F),
 
 但是，上一面得出来的参数并不满足Lee和Carter原文中的约束：
 
-$$\sum \beta_x=1 ; \sum \kappa_y=0$$
+{{< math >}}$$\sum \beta_x=1 ; \sum \kappa_y=0$${{< /math >}}
 
 所以，在这里需要对这些参数做一下变换：
 
-$$\begin{aligned} \hat{\boldsymbol{\alpha}} & =\hat{\boldsymbol{\alpha}}_R+\bar{\kappa}_R \hat{\boldsymbol{\beta}}_R \\ \hat{\boldsymbol{\kappa}} & =n_x \bar{\beta}_R\left(\hat{\boldsymbol{\kappa}}_R-\bar{\kappa}_R \mathbf{1}_{n_y}\right) \\ \hat{\boldsymbol{\beta}} & =\hat{\boldsymbol{\beta}}_R /\left(n_x \bar{\beta}_R\right)\end{aligned}$$
+{{< math >}}$$\begin{aligned} \hat{\boldsymbol{\alpha}} & =\hat{\boldsymbol{\alpha}}_R+\bar{\kappa}_R \hat{\boldsymbol{\beta}}_R \\ \hat{\boldsymbol{\kappa}} & =n_x \bar{\beta}_R\left(\hat{\boldsymbol{\kappa}}_R-\bar{\kappa}_R \mathbf{1}_{n_y}\right) \\ \hat{\boldsymbol{\beta}} & =\hat{\boldsymbol{\beta}}_R /\left(n_x \bar{\beta}_R\right)\end{aligned}$${{< /math >}}
 
 
 ```r
@@ -148,82 +148,94 @@ Kappa.hat <-  n.x * Beta.m*(Kappa.gnm - Kappa.m)
 Fitted.M.hat <-  Alpha.hat + Beta.hat %*% t(Kappa.hat)
 ```
 
-现在我们已经记录好了参数，接下来就是看怎么对$\kappa_y$进行预测。
+现在我们已经记录好了参数，接下来就是看怎么对{{< math >}}$\kappa_y${{< /math >}}进行预测。
 
 ## 2.2 时间序列分析
 
-一个对$\kappa_y$的最简单假设是：
-
+一个对{{< math >}}$\kappa_y${{< /math >}}的最简单假设是：
+{{< math >}}
 $$
 \kappa_y=\mu+\kappa_{y-1}+\epsilon_y, y=2, \ldots, n_y
 $$
-
+{{< /math >}}
 这是一个带漂移项的随机游走过程。为何要这么假设？可以看看我们估计出的$\kappa_y$：
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
 
-可以看出，$\kappa_y$在每年下降，而刚才式中的$\mu$就代表了这个下降，被称为**漂移参数**（drift
-parameter）。误差项$\epsilon_y$服从$Normal(0,\sigma^2)$，在文献中通常被叫做innovations。现在目标就是估计$\mu$和$\sigma^2$。只需要做一次差分，就可以把这个模型估计出来：
+可以看出，{{< math >}}$\kappa_y${{< /math >}}在每年下降，而刚才式中的$\mu$就代表了这个下降，被称为**漂移参数**（drift
+parameter）。误差项{{< math >}}$\epsilon_y${{< /math >}}服从{{< math >}}$Normal(0,\sigma^2)${{< /math >}}，在文献中通常被叫做innovations。现在目标就是估计{{< math >}}$\mu${{< /math >}}和{{< math >}}$\sigma^2${{< /math >}}。只需要做一次差分，就可以把这个模型估计出来：
 
+{{< math >}}
 $$
 \begin{aligned}
 \Delta \kappa_y & =\kappa_y-\kappa_{y-1}, y=2, \ldots, n_y \\
 & =\mu+\epsilon_y
 \end{aligned}
 $$
+{{< /math >}}
 
-只需要找到差分项的样本均值和样本方差，估计出来的就是$\mu$和$\sigma^2$：
+只需要找到差分项的样本均值和样本方差，估计出来的就是{{< math >}}$\mu${{< /math >}}和{{< math >}}$\sigma^2${{< /math >}}：
 
+{{< math >}}
 $$
 \hat{\mu}=\frac{\sum_2^{n_y} \Delta \kappa_y}{n_y-1}=\frac{\kappa_{n_y}-\kappa_1}{n_y-1} \\
 \hat{\sigma}^2=\frac{\sum_2^{n_y}\left(\Delta \kappa_y-\hat{\mu}\right)^2}{n_y-2}
 $$
+{{< /math >}}
 
 但是，带漂移项和一阶滞后项的随机游走其实是个很简单的模型，我们有可能得到了一个预测效果很差的模型，在这种情况下，学者们对于模型进行了以下的改进：
 
-1.  带漂移项和高阶滞后项的随机游走： $$
-     \kappa_y=\mu+2 \kappa_{y-1}-\kappa_{y-2}+\epsilon_y, y=3, \ldots, n_y .
-    $$
+1.  带漂移项和高阶滞后项的随机游走：
+{{< math >}} 
+$$
+\kappa_y=\mu+2 \kappa_{y-1}-\kappa_{y-2}+\epsilon_y, y=3, \ldots, n_y .
+$$
+{{< /math >}}
+模型中的最高阶滞后项的滞后阶数是多少，我们就对它差分多少次，肯定能估计出{{< math >}}$\mu${{< /math >}}和{{< math >}}$\sigma^2${{< /math >}}：
 
-模型中的最高阶滞后项的滞后阶数是多少，我们就对它差分多少次，肯定能估计出$\mu$和$\sigma^2$：
-
+{{< math >}}
 $$
 \begin{aligned}
 \Delta \kappa_y & =\kappa_y-\kappa_{y-1}, y=2, \ldots, n_y, \\
 & =\mu+\epsilon_y .
 \end{aligned}
 $$
+{{< /math >}}
 
 2.  自回归模型（AR）
 
 刚才在带漂移项和高阶滞后项的随机游走中，高阶滞后项的系数是确定的，但是我们也可以通过回归来得出这个系数：
+{{< math >}}
 $$
     \kappa_y=\mu+ \mathrm{ar}_1 \kappa_{y-1}+\epsilon_y, y=2, \ldots, n_y .
 $$
-
-$\mathrm{ar}_1$其实就是个系数，要通过时间序列回归才可以得出来。这样的模型被称为自回归模型。
+{{< /math >}}
+{{< math >}}$\mathrm{ar}_1${{< /math >}}其实就是个系数，要通过时间序列回归才可以得出来。这样的模型被称为自回归模型。
 
 3.  滑动平均模型（MA） 我们也可以把高阶滞后误差项加入模型：
-
+{{< math >}}
 $$
 \kappa_y=\mu+m_1 \epsilon_{y-1}+\epsilon_y, y=2, \ldots, n_y
 $$
-
-$m_1$也只是个系数，这样的模型被称为滑动平均模型。
+{{< /math >}}
+{{< math >}}$m_1${{< /math >}}也只是个系数，这样的模型被称为滑动平均模型。
 
 4.  更加复杂的模型
-    我们也可以把$\kappa$的高阶滞后项与高阶滞后误差项同时加入模型，变成ARMA模型：
-    $$
-    \kappa_y=\mu+\text{ar}_1 \kappa_{y-1}+\text{ar}_2 \kappa_{y-2}+\mathrm{ma}_1 \epsilon_{y-1}+\epsilon_y, y=3, \ldots, n_y
-    $$
+    我们也可以把{{< math >}}$\kappa${{< /math >}}的高阶滞后项与高阶滞后误差项同时加入模型，变成ARMA模型：
+{{< math >}}
+$$
+\kappa_y=\mu+\text{ar}_1 \kappa_{y-1}+\text{ar}_2 \kappa_{y-2}+\mathrm{ma}_1 \epsilon_{y-1}+\epsilon_y, y=3, \ldots, n_y
+$$
+{{< /math >}}
 
-要是一个模型差分$d$次变为ARMA(p,q)模型，我们就称这是一个ARIMA(p,d,q)模型，其中，$p$和$q$分别代表了模型中$\kappa$的最高阶数和误差项的最高阶数。至于要差分多少次，时间序列分析这门课提供了单位根检验这种方法，这里就不再阐述。
+要是一个模型差分{{< math >}}$d${{< /math >}}次变为{{< math >}}ARMA(p,q){{< /math >}}模型，我们就称这是一个ARIMA(p,d,q)模型，其中，{{< math >}}$p${{< /math >}}和{{< math >}}$q${{< /math >}}分别代表了模型中{{< math >}}$\kappa${{< /math >}}的最高阶数和误差项的最高阶数。至于要差分多少次，时间序列分析这门课提供了单位根检验这种方法，这里就不再阐述。
 
 下面，我们直接用`astsa`包中的`sarima`函数对下面的最简单的方程进行估计：
+{{< math >}}
 $$
 \kappa_y=\mu+\kappa_{y-1}+\epsilon_y, y=2, \ldots, n_y
 $$
-
+{{< /math >}}
 
 ```r
 n.y <-  length(Kappa.hat)
@@ -262,7 +274,7 @@ Kappa.for <-  sarima.for(Kappa.hat, n.ahead = N.Ahead, gg=TRUE, p=0, d=1, q=0)
 
 ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
-$\kappa$的预测值得出来了，接下来要得到死亡率的预测值，使用双侧5%的置信区间，可以预测死亡率：
+{{< math >}}$\kappa${{< /math >}}的预测值得出来了，接下来要得到死亡率的预测值，使用双侧5%的置信区间，可以预测死亡率：
 
 
 ```r
@@ -338,7 +350,7 @@ legend("bottomleft", legend = c("Observed", "p = 0, d = 1, q = 0", "p = 3, d = 1
 
 ## 2.3 情景生成和偏差分解
 
-“偿二代”的存在要求人们生成一定的经济情景。刚才的模型中还存在$\epsilon_y$，之前一直假设其为0。现在我们把随机误差项加进来，做100个样本轨道，生成情景：
+“偿二代”的存在要求人们生成一定的经济情景。刚才的模型中还存在{{< math >}}$\epsilon_y${{< /math >}}，之前一直假设其为0。现在我们把随机误差项加进来，做100个样本轨道，生成情景：
 
 
 ```r
@@ -393,7 +405,7 @@ legend("bottomleft", legend = c("95% PI: theoretical", "95% PI: simulated"),
 
 ![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
 
-整体来看，各个分类点的距离也比较相近。但是需要注意，上面的图形只考虑到了stochastic error（随机误差项带来的后续波动），没有考虑到parameter error（估计量$\hat{\mu}$本身的方差）。
+整体来看，各个分类点的距离也比较相近。但是需要注意，上面的图形只考虑到了stochastic error（随机误差项带来的后续波动），没有考虑到parameter error（估计量{{< math >}}$\hat{\mu}${{< /math >}}本身的方差）。
 
 
 ```r
@@ -440,7 +452,7 @@ legend("bottomleft", legend = c("95% CI: theoretical", "95% CI: simulated"),
 
 ![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-2.png)
 
-总之，对于任意的$\hat{\kappa}_{n_y+m}$，我们有：
+总之，对于任意的{{< math >}}$\hat{\kappa}_{n_y+m}${{< /math >}}，我们有：
 $$
 \begin{aligned}
 \operatorname{Var}\left(\hat{\kappa}_{n_y+m}\right) & =\operatorname{Var}\left(m \hat{\mu}+\sum_{j=1}^m \epsilon_{n_y+j}\right) \\
@@ -609,16 +621,19 @@ legend(1960, -4.2, legend = c("Observed mortality", "P-spline regression",
 ![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
 
 下面，我们简单说一下为什么这样做会自然地做线性外推。首先，优化的目标函数是：
+{{< math >}}
 $$
 \ell_p(\boldsymbol{\theta})=\ell(\boldsymbol{\theta})-\frac{1}{2} \lambda P(\boldsymbol{\theta})
 $$
+{{< /math >}}
+我们让预测年的权重为0，所以预测年的加入不会影响似然函数{{< math >}}$\ell(\boldsymbol{\theta})${{< /math >}}。现在我们假设已经得到了拟合年的系数预测{{< math >}}$\boldsymbol{\theta} = (\theta_1, \cdots,\theta_c)^{\prime}${{< /math >}}，现在看加入第一个预测年的系数是多少时，能够让惩罚项{{< math >}}$P(\boldsymbol{\theta})${{< /math >}}继续保持最小。一般来说，为了保障光滑程度，惩罚项与系数的二次差分正相关。这时，只要让二次差分最小（也即是为0），即可保证惩罚项的最小。
 
-我们让预测年的权重为0，所以预测年的加入不会影响似然函数$\ell(\boldsymbol{\theta})$。现在我们假设已经得到了拟合年的系数预测$\boldsymbol{\theta} = (\theta_1, \cdots,\theta_c)^{\prime}$，现在看加入第一个预测年的系数是多少时，能够让惩罚项$P(\boldsymbol{\theta})$继续保持最小。一般来说，为了保障光滑程度，惩罚项与系数的二次差分正相关。这时，只要让二次差分最小（也即是为0），即可保证惩罚项的最小。
-
+{{< math >}}
 $$
 \left(\hat{\theta}_{c-1}-2 \hat{\theta}_c+\theta_{c+1}\right)^2=0 \\
 \theta_{c+1} = 2 \hat{\theta}_c - \hat{\theta}_{c-1}
 $$
+{{< /math >}}
 
 所以系数在做线性外推，参照是拟合年的最后两个系数。刚才的推导其实有点复杂，但是我们可以轻易地使用`predict()`进行预测：
 
@@ -679,11 +694,12 @@ legend("bottomleft", legend = c("order of penalty = 1", "order of penalty = 2",
 可以看出，三阶差分就已经能得到很好的效果了，能够得出一个弯曲的死亡率曲线。
 
 # 4. CBD模型预测
-令$\kappa_y=\left(\kappa_y^{(1)}, \kappa_y^{(2)}\right)^{\prime}$，则可以假设两个$\kappa$满足二维的带漂移项随机游走：
+令{{< math >}}$\kappa_y=\left(\kappa_y^{(1)}, \kappa_y^{(2)}\right)^{\prime}${{< /math >}}，则可以假设两个{{< math >}}$\kappa${{< /math >}}满足二维的带漂移项随机游走：
+{{< math >}}
 $$
 \boldsymbol{\kappa}_y=\boldsymbol{\mu}+\boldsymbol{\kappa}_{y-1}+\boldsymbol{\epsilon}_y, y=2, \ldots, n_y
 $$
-
+{{< /math >}}
 差分一次就能得到估计，只不过是用矩阵表示了而已。中间的很多表示都能使用Cronecker积直接进行表示，这里就不赘述了。
 
 首先读入数据：
