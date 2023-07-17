@@ -6,7 +6,6 @@ bio: ""
 interests:
   - Actuarial Data Science
   - Mortality Modelling
-  - ""
 social:
   - icon: github
     icon_pack: ai
