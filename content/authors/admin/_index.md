@@ -8,12 +8,12 @@ interests:
   - Mortality Modelling
 social:
   - icon: github
-    icon_pack: far
+    icon_pack: fab
     link: https://github.com/Yuanzhuangac
     display:
       header: true
   - icon: cv
-    icon_pack: far
+    icon_pack: fab
     link: uploads/resume.pdf
     display:
       header: true
