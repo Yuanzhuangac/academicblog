@@ -8,13 +8,15 @@ interests:
   - Mortality Modelling
 social:
   - icon: github
-    icon_pack: ai
+    icon_pack: far
     link: https://github.com/Yuanzhuangac
     display:
-      header: false
+      header: true
   - icon: cv
-    icon_pack: ai
+    icon_pack: far
     link: uploads/resume.pdf
+    display:
+      header: true
 organizations:
   - name: Nankai University
     url: https://www.nankai.edu.cn/main.htm
