@@ -20,7 +20,7 @@ social:
       header: true
   - icon: cv
     icon_pack: ai
-    link: uploads/resume.pdf
+    link: uploads/Yuanzhuang_cv.pdf
     display:
       header: true
 organizations:
