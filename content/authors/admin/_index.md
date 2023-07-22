@@ -22,7 +22,7 @@ social:
     icon_pack: ai
     link: uploads/Yuanzhuang_cv.pdf
     display:
-      header: true
+      header: false
 organizations:
   - name: Nankai University
     url: https://www.nankai.edu.cn/main.htm
