@@ -13,6 +13,8 @@ main:
   - name: Posts
     url: '#posts'
     weight: 40
+  - name: Teaching/TA
+    url: '#teaching'
 
 # Link to a PDF of your resume/CV from the menu.
 # To enable, copy your resume/CV to `static/uploads/resume.pdf` and uncomment the lines below.
