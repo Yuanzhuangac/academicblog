@@ -9,9 +9,7 @@ image:
   preview_only: false
 ---
 
-Instructor: Prof. Lianzeng Zhang（张连增教授）
-
-Teaching Assistant： Yuan Zhuang（庄源）
+Instructor: Prof. Lianzeng Zhang
 
 ## 1. 课本 Textbook and References
 Philip J. Boland. Statistical and Probabilistic Methods in
@@ -19,4 +17,4 @@ Actuarial Science. 2007, CRC Press. [download](https://yuanzhuang.xyz/uploads/St
 
 ## 2. 第一课：R语言 A First Course of R
 - Install R：Use [this](https://yuanzhuang.xyz/uploads/Install_R.pdf) file and do it step by step!
-- Beamer used during the course: [download](https://yuanzhuang.xyz/uploads/BasicR.pdf)
+- [Beamer](https://yuanzhuang.xyz/uploads/BasicR.pdf) used during the course
