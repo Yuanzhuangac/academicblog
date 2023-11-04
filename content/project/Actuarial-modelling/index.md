@@ -2,8 +2,7 @@
 title: Fall 2023 Actuarial Modelling
 subtitle: ""
 date: 2023-11-04T13:25:37.775Z
-summary: "Instructor: Prof. Lianzeng Zhang (张连增教授) 
-Teaching Assistant: Yuan Zhuang (庄源)"
+summary: "Instructor: Prof. Lianzeng Zhang (张连增教授) <br> Teaching Assistant: Yuan Zhuang (庄源)"
 draft: false
 featured: false
 image:
