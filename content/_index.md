@@ -15,6 +15,7 @@ sections:
     id: projects
     content:
       title: Teaching Jobs and Projects
+      text: 'Instructor: Lianzeng Zhang'
       filters:
         folders:
           - project
