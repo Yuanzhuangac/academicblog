@@ -2,7 +2,7 @@
 title: Fall 2023 Actuarial Modelling
 subtitle: ""
 date: 2023-11-04T13:25:37.775Z
-summary: "Instructor: Prof. Lianzeng Zhang (张连增教授) <br> Teaching Assistant: Yuan Zhuang (庄源)"
+summary: "<b>Instructor:</b> Prof. Lianzeng Zhang (张连增教授) <br> <b>Teaching Assistant:</b> Yuan Zhuang (庄源)"
 draft: false
 featured: false
 image:
@@ -13,7 +13,7 @@ image:
 ## 1. 课本 Textbook and References
 
 Philip J. Boland. Statistical and Probabilistic Methods in
-Actuarial Science. 2007, CRC Press. [download](https://yuanzhuang.xyz/uploads/Statistical%20and%20Probabilistic%20Methods%20in%20Actuarial%20Science.pdf) here
+Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/Statistical%20and%20Probabilistic%20Methods%20in%20Actuarial%20Science.pdf)]
 
 ## 2. 第一课：R语言 A First Course of R
 
