@@ -10,7 +10,7 @@ image:
   focal_point: Smart
   preview_only: false
 ---
-## 1. 课本 Textbook and References
+## 1. 课本 Textbook
 
 Philip J. Boland. Statistical and Probabilistic Methods in
 Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/Statistical%20and%20Probabilistic%20Methods%20in%20Actuarial%20Science.pdf)]
@@ -18,4 +18,4 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/S
 ## 2. 第一课：R语言 A First Course of R
 
 * Install R：Use [this](https://yuanzhuang.xyz/uploads/Install_R.pdf) file and do it step by step!
-* [Beamer](https://yuanzhuang.xyz/uploads/BasicR.pdf) used during the course
+* [[Slide](https://yuanzhuang.xyz/uploads/BasicR.pdf)] used during the course
