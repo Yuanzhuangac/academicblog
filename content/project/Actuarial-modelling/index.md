@@ -9,8 +9,9 @@ image:
   preview_only: false
 ---
 
-Instructor: Prof. Lianzeng Zhang（张连增 南开大学精算学系教授）
-Teaching Assistant： Yuan Zhuang（庄源 南开大学精算学系硕士研究生）
+Instructor: Prof. Lianzeng Zhang（张连增教授）
+
+Teaching Assistant： Yuan Zhuang（庄源）
 
 ## 1. 课本 Textbook and References
 Philip J. Boland. Statistical and Probabilistic Methods in
