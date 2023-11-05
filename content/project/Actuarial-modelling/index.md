@@ -10,7 +10,7 @@ image:
   focal_point: Smart
   preview_only: false
 ---
-<b>Instructor:<b/> Lianzeng Zhang （张连增教授，南开大学精算学系主任）
+<b>Instructor:</b> Lianzeng Zhang （张连增教授，南开大学精算学系主任）
 
 ## 课本 Textbook
 Philip J. Boland. Statistical and Probabilistic Methods in
