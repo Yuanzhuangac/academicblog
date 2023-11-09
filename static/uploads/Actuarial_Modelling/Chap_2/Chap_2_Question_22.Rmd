@@ -1,0 +1,94 @@
+---
+title: "Chap 2第22题参考答案"
+author: "Yuan Zhuang"
+date: "2023-11-06"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    keep_tex: true
+---
+请在看这份代码前阅读参考答案和批改评述
+
+# 1. 导入数据集
+
+```{r}
+library(readxl)
+Theft <- read_excel("Chap_2_Dataset_Theft.xlsx")
+# 将Theft从数据框变为向量，便于进行K-S检验
+Theft <- Theft$Theft
+```
+
+# 2. Weibull极大似然估计
+
+书中第46面已经给出了Weibull分布的极大似然估计：
+$$\hat{c} = 0.00518, \hat{\gamma} =
+0.71593$$
+
+```{r,warning=FALSE}
+c_mle_weibull <- 0.00518
+gamma_mle_weibull <- 0.71593
+ks.test(Theft,"pweibull",
+        gamma_mle_weibull,
+        c_mle_weibull^(-1/gamma_mle_weibull))
+```
+
+# 3. Weibull分位数估计
+书中第46面已经给出了Weibull分布的分位数估计：
+$$\ddot{c} = 0.002494, \ddot{\gamma} =
+ 0.847503$$
+
+```{r,warning=FALSE}
+c_mpercent_weibull <- 0.002494
+gamma_mpercent_weibull <- 0.847503
+ks.test(Theft,"pweibull",
+        gamma_mpercent_weibull,
+        c_mpercent_weibull^(-1/gamma_mpercent_weibull))
+```
+
+# 4. Lognormal极大似然估计
+
+```{r,warning=FALSE}
+mu_lognormal <- 6.62417
+sd_lognormal <- sqrt(2.30306)
+ks.test(Theft,"plnorm",mu_lognormal,sd_lognormal)
+```
+
+# 5. 怎样能够得出Weibull分布的极大似然估计？（不做要求）
+
+有些同学会疑问，书上对于
+$c$和
+$\gamma$的估计是怎么得出来的？使用R语言，其实非常简单！我们使用R语言中的`optim`函数最大化对数似然函数，并得出相应的参数估计。这是一个很好用的数值方法！
+
+```{r,warning=FALSE}
+weibull.fun<- function(parameter,x){	
+	shape_weibull <- parameter[1]
+	scale_weibull <- parameter[2]
+	# 对数似然函数
+	logL<- sum(log(dweibull(x,
+	                        shape=shape_weibull,
+	                        scale=scale_weibull)))
+	return(-logL)
+}
+# 因为R中只有最小化函数optim()
+# 我们只需要参数的值，最大化logL和最小化-logL是一致的
+# 初始化两个参数作为迭代初始值
+theta0 <- c(0.5,100)
+result <- optim(theta0,weibull.fun,x=Theft)
+# 参数的值保存在result$'par'中
+# 有两个值，第一个是形状参数 第二个是尺度参数
+# 换算成书上的参数方式
+c_mle <- result[["par"]][2]^(-result[["par"]][1])
+gamma_mle <- result[["par"]][1]
+# 左边是我们估计的参数，右边是书上给出的答案
+# 结果非常接近
+c_mle; c_mle_weibull
+gamma_mle; gamma_mle_weibull
+```
+
+看来我们和书上的结果非常接近！
+
+
+

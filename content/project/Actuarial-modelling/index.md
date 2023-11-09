@@ -14,16 +14,16 @@ image:
 
 ## 课本 Textbook
 Philip J. Boland. Statistical and Probabilistic Methods in
-Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/Statistical%20and%20Probabilistic%20Methods%20in%20Actuarial%20Science.pdf)]
+Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Statistical%20and%20Probabilistic%20Methods%20in%20Actuarial%20Science.pdf)]
 
 ## 1. 预备知识：R语言 A First Course of R
 
-* Install R & Rstudio：Use [this](https://yuanzhuang.xyz/uploads/Install_R.pdf) file and do it step by step!
-* [[Slide](https://yuanzhuang.xyz/uploads/BasicR.pdf)] used during the course
+* Install R & Rstudio：Use [this](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Base_R/Install_R.pdf) file and do it step by step!
+* [[Slide](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Base_RBasicR.pdf)] used during the course
 
 ## 2. 损失分布 Loss Distributions
 ### 2.1 复习课 Review
-* [[Slide](https://yuanzhuang.xyz/uploads/Review_Actuarial_Modelling_Chap_2.pdf)] 
+* [[Slide](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Review_Actuarial_Modelling_Chap_2.pdf)] 
 * Video (Soon on Bilibili)
 ### 2.2 作业评讲 Homework
 * Answers (Coming soon)
