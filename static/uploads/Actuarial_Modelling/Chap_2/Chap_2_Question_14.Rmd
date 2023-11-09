@@ -1,0 +1,58 @@
+---
+title: "Chap 2第14题参考答案"
+author: "Yuan Zhuang"
+date: "2023-11-06"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    keep_tex: true
+---
+请在看这份代码前阅读参考答案和批改评述
+
+# 1. 方法一：使用均匀分布生成Weibull分布随机数
+```{r}
+# 设置随机数种子，使代码可以复现
+set.seed(19991201)
+# 设定分布参数
+c <- 0.04
+gamma_weibull <- 2
+# 使用均匀分布生成Weibull随机数
+weibull_sample <- (-(log(1-runif(300))/c))^(1/gamma_weibull)
+# 查看样本均值和样本方差
+mean(weibull_sample)
+var(weibull_sample)
+```
+
+# 2. 方法二：使用Reparametrization生成Weibull分布随机数
+```{r}
+# 设置随机数种子，使代码可以复现
+set.seed(2120223132)
+# 设定分布参数
+c <- 0.04
+gamma_weibull <- 2
+# 变为R语言中的参数
+shape <- gamma_weibull
+scale <- c^(-1/gamma_weibull)
+weibull_sample <- rweibull(300, shape = shape, scale = scale)
+# 查看样本均值和样本方差
+mean(weibull_sample)
+var(weibull_sample)
+```
+
+# 3. 理论值
+```{r}
+# 使用gamma计算伽马函数
+weibull_mean <- 
+  1/c^(1/gamma_weibull)*gamma(1+1/gamma_weibull)
+weibull_second_moment <- 
+  1/c^(2/gamma_weibull)*gamma(1+2/gamma_weibull)
+weibull_variance <- weibull_second_moment - 
+  weibull_mean^2
+weibull_mean
+weibull_variance
+```
+
+两种方法生成的随机数和理论值接近，但仍有一定差距。
