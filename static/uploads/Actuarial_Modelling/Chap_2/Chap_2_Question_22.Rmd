@@ -90,5 +90,13 @@ gamma_mle; gamma_mle_weibull
 
 看来我们和书上的结果非常接近！
 
+还有没有一步到位的方法呢？当然有！使用`fitdistrplus`这个包就可以一步到位：
 
+```{r,warning=FALSE}
+library(fitdistrplus)
+fitW <- fitdist(Theft,"weibull",method = "mle")
+fitW[["estimate"]][["scale"]]^(-fitW[["estimate"]][["shape"]])
+fitW[["estimate"]][["shape"]]
+```
 
+得到的结果也跟书上十分接近。
