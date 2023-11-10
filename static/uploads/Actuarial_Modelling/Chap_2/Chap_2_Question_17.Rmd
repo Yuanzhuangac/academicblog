@@ -1,0 +1,29 @@
+---
+title: "Chap 2第17题_对数正态分布的累计分布函数"
+author: "Yuan Zhuang"
+date: "2023-11-10"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    keep_tex: true
+---
+# 1. 方法一：直接使用Lognormal的内置函数
+```{r}
+plnorm(400, meanlog = 5.75, sdlog = 0.4, lower.tail = FALSE)
+```
+
+# 2. 方法二：使用Lognormal和Normal之间的关系
+
+```{r}
+1 - pnorm(log(400),mean = 5.75, sd = 0.4)
+```
+
+或
+
+```{r}
+1 - pnorm((log(400)-5.75)/0.4)
+```
+
