@@ -1,0 +1,61 @@
+---
+title: "Chap 3第5题参考答案"
+author: "Yuan Zhuang"
+date: "2023-11-14"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    keep_tex: true
+---
+# 1. 构建复合分布
+
+```{r,message=FALSE,warning=FALSE}
+# 载入actuar包，一个有名的精算包
+library(actuar)
+# 给出X（损失强度）的分布
+# 一定要有X为0时的概率（包的规定）
+fx <- 0:5 / 15
+# 主要函数
+# recursive，代表使用Panjer递推
+# 损失频率（N）分布使用二项分布（由题意可得）
+# 还可以使用各种零膨胀分布
+# 损失强度（X）分布使用刚才定义的X
+# size和prob是pbinom函数中的参数，分别代表n和p
+Fs <- aggregateDist("recursive", model.freq = "binomial",
+                    model.sev = fx, size = 4, prob = 0.5)
+# 绘制CDF的图
+plot(Fs)
+```
+
+# 2. 一阶差分得到S的分布列
+
+```{r}
+# scales包能将概率显示为百分数
+library(scales)
+S <- 0:20
+# 将cdf做一阶差分得到分布列
+Prob <- diff(Fs)
+# 组合成为dataframe，并更改列名
+prob_mass_function <- data.frame(S,
+                                 percent(Prob,
+                                         accuracy = 0.01))
+colnames(prob_mass_function) <- c("S","Probability")
+# 查看分布列
+prob_mass_function
+```
+
+# 3. 计算S的均值、方差和偏度
+
+```{r}
+# S的均值
+mean_S <- sum(S*Prob)
+# S的方差
+var_S <- sum(S^2*Prob)-mean_S^2
+# S的偏度
+kurtosis_S <- sum((S-mean_S)^3*Prob) / var_S^1.5
+mean_S; var_S; kurtosis_S
+```
+
