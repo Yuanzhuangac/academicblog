@@ -34,3 +34,5 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
   * Question 17: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_17.Rmd)]
   * Question 22: [[Dataset](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Dataset_Theft.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_22.Rmd)]
 * Video (视同学们需要，选择大家有较多疑问的题目进行口述讲解，并放上Bilibili；如无需求则不再录制视频)
+
+## 3. 风险理论 Risk Theory
