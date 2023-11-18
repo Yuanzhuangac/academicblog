@@ -1,0 +1,50 @@
+---
+title: "Chap 3第23题参考答案_LEV的逆函数和M*求解"
+author: "Yuan Zhuang"
+date: "2023-11-18"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    keep_tex: true
+---
+# 1. 编写LEV函数和优化函数
+
+```{r}
+# 制作LEV函数
+LEV.standard.normal <- function(M){
+  lev <- - dnorm(M) + M *(1 - pnorm(M))
+  return(lev)
+}
+# 写下所有参数 
+mu <- 33000
+sigma <- sqrt(35151000)
+theta <- 0.37
+xi <- 0.5
+# 我们的目标就是让L(X) = - mu / sigma * theta / xi
+LX <- - mu / sigma * theta / xi
+# 设定目标函数供optim来优化
+f <- function(X){
+  # 这里稍微设计了一下这个函数
+  # optim让目标函数最小化
+  # 如果不平方或者取绝对值的话，无法得出想要结果
+  (LEV.standard.normal(X)-LX)^2
+}
+```
+
+# 2. 开始优化并求出M
+
+```{r}
+# 设定初值、方法、限制和最大迭代次数
+result <- optim(-4, f, 
+                method = "Brent", 
+                lower = -6, upper = -4, 
+                control= list(maxit = 1000))
+# 得出最优的M
+M <- mu + sigma * result[["par"]]
+M
+```
+
+

@@ -1,0 +1,51 @@
+---
+title: "Chap 3第23题参考答案_LEV图像绘制"
+author: "Yuan Zhuang"
+date: "2023-11-17"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    keep_tex: true
+---
+# 1. 制作LEV函数并输出结果
+
+```{r,tidy=TRUE}
+# 制作LEV函数
+LEV.normal <- function(mu,sigma,M){
+  # 将(M-mu)/sigma视为一个新的变量，使后面代码更加简洁
+  Normalized <- (M-mu)/sigma
+  # 直接写出lev函数
+  lev <- -sigma * dnorm(Normalized) + sigma * Normalized *(1 - pnorm(Normalized)) + mu
+  return(lev)
+}
+```
+
+```{r}
+# 代入mu、sigma和一串M，返回一个向量
+mu <- 33000
+sigma <- sqrt(35151000)
+M <- seq(from = 0, by = 100, length.out = 1000)
+LEV <- LEV.normal(mu = mu,sigma = sigma,M = M)
+```
+
+# 2. 绘制函数图像
+
+## 2.1 最简单的plot
+```{r}
+# 使用最简单的plot函数进行绘图
+# 指定x和y
+# 将点的大小（cex）设为0.1，防止曲线过粗
+plot(M, LEV, cex = 0.1)
+```
+
+## 2.2 使用`ggplot2`绘图
+
+```{r}
+library(ggplot2)
+result.frame <- data.frame(M, LEV)
+ggplot(data = result.frame, mapping = aes(x = M, y = LEV))+
+  geom_line()
+```
