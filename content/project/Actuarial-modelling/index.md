@@ -33,6 +33,10 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
   * Question 14: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_14.Rmd)]
   * Question 17: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_17.Rmd)]
   * Question 22: [[Dataset](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Dataset_Theft.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_22.Rmd)]
-* Video (视同学们需要，选择大家有较多疑问的题目进行口述讲解，并放上Bilibili；如无需求则不再录制视频)
 
 ## 3. 风险理论 Risk Theory
+### 3.1 作业评讲 Homework
+* [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Actuarial_Modelling_Answers_Chap_3.pdf)]
+* Codes and Data for replication（为方便同学们学习和复现，将参考答案中用到的代码和数据开放下载）
+  * Question 5: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Qusetion_5.xlsx)] [[R](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_5.Rmd)]
+  * Question 23: [[R for plot LEV](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_LEV.Rmd)] [[R for L^{-1}](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_M_star.Rmd)]
