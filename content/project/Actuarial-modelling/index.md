@@ -38,5 +38,8 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 ### 3.1 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Actuarial_Modelling_Answers_Chap_3.pdf)]
 * Codes and Data for replication（为方便同学们学习和复现，将参考答案中用到的代码和数据开放下载）
-  * Question 5: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Qusetion_5.xlsx)] [[R](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_5.Rmd)]
-  * Question 23: [[R for plot LEV](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_LEV.Rmd)] [[R for L^{-1}](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_M_star.Rmd)]
+  * Question 5: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Qusetion_5.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_5.Rmd)]
+  * Question 23: [[Rmarkdown for plot LEV](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_LEV.Rmd)] [[Rmarkdown for L^{-1}](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_M_star.Rmd)]
+
+## 4. 破产理论 Ruin Theory
+### 4.1 作业评讲 Homework
