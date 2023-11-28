@@ -11,6 +11,14 @@ image:
   preview_only: false
 ---
 <b>Instructor:</b> Lianzeng Zhang （张连增教授，南开大学精算学系主任）
+<b>TA:</b> Yuan Zhuang （庄源）
+
+<p>&#10071;通知</p>
+答疑时间：12月2日 & 12月3日晚8:00-9:00
+
+地点：学院二楼讨论区
+
+无需预约，问题可包含：本课程学习、作业判分和未来规划。
 
 ## 课本 Textbook
 Philip J. Boland. Statistical and Probabilistic Methods in
@@ -43,3 +51,6 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 
 ## 4. 破产理论 Ruin Theory
 ### 4.1 作业评讲 Homework
+* [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Actuarial_Modelling_Answers_Chap_4.pdf)]
+* Codes and Data for replication（为方便同学们学习和复现，将参考答案中用到的代码和数据开放下载）
+  * Question 4: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Chap_4_Qusetion_4.xlsx)]
