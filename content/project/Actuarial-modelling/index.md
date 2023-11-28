@@ -11,14 +11,16 @@ image:
   preview_only: false
 ---
 <b>Instructor:</b> Lianzeng Zhang （张连增教授，南开大学精算学系主任）
+
 <b>TA:</b> Yuan Zhuang （庄源）
 
 <p>&#10071;通知</p>
-答疑时间：12月2日 & 12月3日晚8:00-9:00
 
-地点：学院二楼讨论区
+<p>&#10071;</p>答疑时间：12月2日 & 12月3日晚8:00-9:00
 
-无需预约，问题可包含：本课程学习、作业判分和未来规划。
+<p>&#10071;通知</p>地点：学院二楼讨论区
+
+<p>&#10071;通知</p>无需预约，问题可包含：本课程学习、作业判分和未来规划。
 
 ## 课本 Textbook
 Philip J. Boland. Statistical and Probabilistic Methods in
