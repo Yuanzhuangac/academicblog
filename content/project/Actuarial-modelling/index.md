@@ -36,8 +36,8 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 * [[Slide](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Review_Actuarial_Modelling_Chap_2.pdf)] 
 * Video (Soon on Bilibili)
 ### 2.2 作业评讲 Homework
-* [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Actuarial_Modelling_Answers_Chap_2.pdf)]（参考答案与批改评述，请同学们仔细阅读，尤其是“批改评述总结”一节）
-* Codes and Data for replication（为方便同学们学习和复现，将参考答案中用到的代码和数据开放下载）
+* [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Actuarial_Modelling_Answers_Chap_2.pdf)]
+* Codes and Data for replication
   * Question 4: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Qusetion_4.xlsx)]
   * Question 9: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Qusetion_9.xlsx)]
   * Question 14: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_14.Rmd)]
@@ -47,12 +47,12 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 ## 3. 风险理论 Risk Theory
 ### 3.1 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Actuarial_Modelling_Answers_Chap_3.pdf)]
-* Codes and Data for replication（为方便同学们学习和复现，将参考答案中用到的代码和数据开放下载）
+* Codes and Data for replication
   * Question 5: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Qusetion_5.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_5.Rmd)]
   * Question 23: [[Rmarkdown for plot LEV](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_LEV.Rmd)] [[Rmarkdown for L^{-1}](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_M_star.Rmd)]
 
 ## 4. 破产理论 Ruin Theory
 ### 4.1 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Actuarial_Modelling_Answers_Chap_4.pdf)]
-* Codes and Data for replication（为方便同学们学习和复现，将参考答案中用到的代码和数据开放下载）
+* Codes and Data for replication
   * Question 4: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Chap_4_Qusetion_4.xlsx)]
