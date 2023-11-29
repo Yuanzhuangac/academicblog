@@ -32,10 +32,10 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 * [[Slide](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Base_R/BasicR.pdf)] used during the course
 
 ## 2. 损失分布 Loss Distributions
-### 2.1 复习课 Review
+### 复习课 Review
 * [[Slide](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Review_Actuarial_Modelling_Chap_2.pdf)] 
 * Video (Soon on Bilibili)
-### 2.2 作业评讲 Homework
+### 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Actuarial_Modelling_Answers_Chap_2.pdf)]
 * Codes and Data for replication
   * Question 4: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Qusetion_4.xlsx)]
@@ -45,14 +45,16 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
   * Question 22: [[Dataset](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Dataset_Theft.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_22.Rmd)]
 
 ## 3. 风险理论 Risk Theory
-### 3.1 作业评讲 Homework
+### 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Actuarial_Modelling_Answers_Chap_3.pdf)]
 * Codes and Data for replication
   * Question 5: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Qusetion_5.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_5.Rmd)]
   * Question 23: [[Rmarkdown for plot LEV](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_LEV.Rmd)] [[Rmarkdown for L^{-1}](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_M_star.Rmd)]
 
 ## 4. 破产理论 Ruin Theory
-### 4.1 作业评讲 Homework
+### 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Actuarial_Modelling_Answers_Chap_4.pdf)]
 * Codes and Data for replication
   * Question 4: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Chap_4_Qusetion_4.xlsx)]
+
+## 5. 信度理论 Credibility Theory
