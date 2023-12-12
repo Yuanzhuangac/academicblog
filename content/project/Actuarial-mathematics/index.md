@@ -17,33 +17,27 @@ image:
 <p>&#10071;本网址记录了中国精算师协会准精算师科目《精算数学》的全部编撰过程文档，以供参考。最终出版物以市面售卖书本为准。</p>
 
 ## 1. 培训 Training Course
-
 ### 第一次培训：$\LaTeX$基础知识
 * Teaching: Lianzeng Zhang（教学：张连增教授）
 * Tutorial: Yuan Zhuang（讲义编写：庄源）
 * Source: $\LaTeX$ Tutorial Chap 1: Basic $\LaTeX$ [[Download](https://yuanzhuang.xyz/uploads/CAA/LaTeX/LaTeX_Chap1.pdf)]
-
 ### 第二次培训：在$\LaTeX$中键入中文
 * Teaching: Lianzeng Zhang（教学：张连增教授）
 * Tutorial: Yuan Zhuang（讲义编写：庄源）
 * Source: $\LaTeX$ Tutorial Chap 2: Typing Chinese in $\LaTeX$ [[Download](https://yuanzhuang.xyz/uploads/CAA/LaTeX/LaTeX_Chap2.pdf)]
-
 ### 第三次培训：$\LaTeX$中的数学符号
 * Teaching: Lianzeng Zhang（教学：张连增教授）
 * Tutorial: Yuan Zhuang（讲义编写：庄源）
 * Source: $\LaTeX$ Tutorial Chap 3: Mathematical symbol in $\LaTeX$ [[Download](https://yuanzhuang.xyz/uploads/CAA/LaTeX/LaTeX_Chap3.pdf)]
-
 ### 第四次培训：$\LaTeX$中输入精算符号
 * Teaching: Lianzeng Zhang（教学：张连增教授）
 * Tutorial: Yuan Zhuang（讲义编写：庄源）
 * Source: $\LaTeX$ Tutorial Chap 4: Package $\texttt{actuarialsymbol}$ in $\LaTeX$ [[Download](https://yuanzhuang.xyz/uploads/CAA/LaTeX/LaTeX_Chap4.pdf)]
-
 ### 第五次培训：录入任务布置及模板使用
 * Teaching: Lianzeng Zhang（教学：张连增教授）
 * Tutorial: Yuan Zhuang（讲义编写：庄源）
 * $\LaTeX$ Template: Yuan Zhuang（$\LaTeX$模板：庄源）
 * Source: Assignment of tasks and $\texttt{Elegant Actuarial Book}$: [[Download](https://yuanzhuang.xyz/uploads/CAA/LaTeX/ElegantActuarialBook.pdf)]
-
 ## 2. Financial Mathematics 精算数学：金融数学篇
 ### 2.1 Division of labor 人员分工
 * Chief Editor: Prof. Lianzeng Zhang（主编：张连增教授）
@@ -55,7 +49,6 @@ image:
 ### 2.2 Source 成品稿件及附表EXCEL文件
 * <b>Book:</b> Pending （成稿：后续上传）
 * <b>Table of interest function（利息函数表）:</b> [[Download](https://yuanzhuang.xyz/uploads/CAA/Interest_Theory/Interest_function.xlsx)]
-
 ## 3. Life Insurance Mathematics 精算数学：寿险精算篇
 ### 3.1 Division of labor 人员分工
 * Chief Editor: Prof. Lianzeng Zhang（主编：张连增教授）
@@ -68,7 +61,6 @@ image:
 ### 3.2 成品稿件及附表EXCEL文件
 * <b>Book:</b> Pending （成稿：后续上传）
 * <b>Tables:</b> Pending （表格：后续上传）
-
 ### 4. Non-Life Insurance Mathematics 精算数学：非寿险精算篇 
 ### 4.1 Division of labor 人员分工
 * Chief Editor: Lianzeng Zhang（主编：张连增教授）
