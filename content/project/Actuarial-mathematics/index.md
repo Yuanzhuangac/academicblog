@@ -10,7 +10,6 @@ image:
   focal_point: Smart
   preview_only: false
 ---
-
 <b>Chief Editor:</b> Lianzeng Zhang （主编：张连增教授，南开大学精算学系主任）
 
 <b>Assistants:</b> Memebers of Lianzeng's team （协编：张连增课题组成员）
