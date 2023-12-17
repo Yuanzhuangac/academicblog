@@ -43,6 +43,9 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
   * Question 14: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_14.Rmd)]
   * Question 17: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_17.Rmd)]
   * Question 22: [[Dataset](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Dataset_Theft.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_22.Rmd)]
+### 源哥大押题 Sample Questions
+* [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Dataset_Theft.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Actuarial_Modelling_Chap2_Candidate_Questions.pdf)] 
+
 
 ## 3. 风险理论 Risk Theory
 ### 作业评讲 Homework
@@ -58,3 +61,7 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
   * Question 4: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Chap_4_Qusetion_4.xlsx)]
 
 ## 5. 信度理论 Credibility Theory
+## 6. 车险无赔款优待理论 NCD/Bonus-Malus System
+* 这章没有作业，期末考非定量的题目
+## 7. 广义线性模型 GLM
+* 这章没有作业，期末考非定量的题目
