@@ -34,7 +34,7 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 ## 2. 损失分布 Loss Distributions
 ### 复习课 Review
 * [[Slide](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Review_Actuarial_Modelling_Chap_2.pdf)] 
-* Video (Soon on Bilibili)
+* [[Video on Bilibili](https://www.bilibili.com/video/BV1Ua4y1r7uL/)]
 ### 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Actuarial_Modelling_Answers_Chap_2.pdf)]
 * Codes and Data for replication
@@ -43,10 +43,12 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
   * Question 14: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_14.Rmd)]
   * Question 17: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_17.Rmd)]
   * Question 22: [[Dataset](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Dataset_Theft.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Chap_2_Question_22.Rmd)]
-### 源哥大押题 Sample Questions
+### 源哥期末大押题 Sample Questions
 * [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Actuarial_Modelling_Chap2_Candidate_Questions.pdf)] 
 
 ## 3. 风险理论 Risk Theory
+### 复习课 Review
+
 ### 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Actuarial_Modelling_Answers_Chap_3.pdf)]
 * Codes and Data for replication
