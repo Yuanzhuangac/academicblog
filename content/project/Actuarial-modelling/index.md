@@ -63,6 +63,5 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 
 ## 5. 信度理论 Credibility Theory
 ## 6. 车险无赔款优待理论 NCD/Bonus-Malus System
-* 这章没有作业，期末考非定量的题目
 ## 7. 广义线性模型 GLM
 * 这章没有作业，期末考非定量的题目
