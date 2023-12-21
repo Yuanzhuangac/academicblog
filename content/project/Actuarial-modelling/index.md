@@ -62,6 +62,11 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
   * Question 4: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Chap_4_Qusetion_4.xlsx)]
 
 ## 5. 信度理论 Credibility Theory
+### 复习课 Review
+* [[Slide](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_5/Review_Actuarial_Modelling_Chap_5.pdf)] 
+* [Video]（Soon on Bilibili）
+### 作业评讲 Homework
+### 源哥期末大押题 Sample Questions
+* [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_5/Actuarial_Modelling_Chap5_Candidate_Questions.pdf)] 
+
 ## 6. 车险无赔款优待理论 NCD/Bonus-Malus System
-## 7. 广义线性模型 GLM
-* 这章没有作业，期末考非定量的题目
