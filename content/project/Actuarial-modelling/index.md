@@ -47,19 +47,21 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 * [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_2/Actuarial_Modelling_Chap2_Candidate_Questions.pdf)] 
 
 ## 3. 风险理论 Risk Theory
-### 复习课 Review
-
 ### 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Actuarial_Modelling_Answers_Chap_3.pdf)]
 * Codes and Data for replication
   * Question 5: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Qusetion_5.xlsx)] [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_5.Rmd)]
   * Question 23: [[Rmarkdown for plot LEV](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_LEV.Rmd)] [[Rmarkdown for L^{-1}](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Chap_3_Question_23_M_star.Rmd)]
+### 源哥期末大押题 Sample Questions
+* [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_3/Actuarial_Modelling_Chap3_Candidate_Questions.pdf)] 
 
 ## 4. 破产理论 Ruin Theory
 ### 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Actuarial_Modelling_Answers_Chap_4.pdf)]
 * Codes and Data for replication
   * Question 4: [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Chap_4_Qusetion_4.xlsx)]
+### 源哥期末大押题 Sample Questions
+* [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_4/Actuarial_Modelling_Chap4_Candidate_Questions.pdf)] 
 
 ## 5. 信度理论 Credibility Theory
 ### 复习课 Review
@@ -73,3 +75,5 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 * [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_5/Actuarial_Modelling_Chap5_Candidate_Questions.pdf)] 
 
 ## 6. 车险无赔款优待理论 NCD/Bonus-Malus System
+### 源哥期末大押题 Sample Questions
+* [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Actuarial_Modelling_Chap6_Candidate_Questions.pdf)] 
