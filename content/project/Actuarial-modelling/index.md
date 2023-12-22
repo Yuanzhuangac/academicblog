@@ -68,7 +68,8 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 ## 5. 信度理论 Credibility Theory
 ### 复习课 Review
 * [[Slide](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_5/Review_Actuarial_Modelling_Chap_5.pdf)] 
-* [Video]（Soon on Bilibili）
+* [[Video](https://www.bilibili.com/video/BV1gw41157GF/)]
+
 ### 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_5/Actuarial_Modelling_Answers_Chap_5.pdf)]
 * Codes and Data for replication
