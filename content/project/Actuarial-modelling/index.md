@@ -10,9 +10,11 @@ image:
   focal_point: Smart
   preview_only: false
 ---
-<b>Instructor:</b> Lianzeng Zhang （张连增教授，南开大学精算学系主任）
+<b>Instructor:</b> Lianzeng Zhang （教师：张连增教授，南开大学精算学系主任）
 
-<b>TA:</b> Yuan Zhuang （庄源）
+<b>TA:</b> Yuan Zhuang（助教：庄源）
+
+<b>Many thanks to:</b> Mengya Yue, Qingxiao Liu （岳梦雅，刘庆晓）
 
 <p>&#10071;通知</p>
 
