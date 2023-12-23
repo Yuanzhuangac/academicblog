@@ -68,7 +68,7 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 ## 5. 信度理论 Credibility Theory
 ### 复习课 Review
 * [[Slide](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_5/Review_Actuarial_Modelling_Chap_5.pdf)] 
-* [[Video](https://www.bilibili.com/video/BV1gw41157GF/)]
+* [[Video on Bilibili](https://www.bilibili.com/video/BV1gw41157GF/)]
 
 ### 作业评讲 Homework
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_5/Actuarial_Modelling_Answers_Chap_5.pdf)]
@@ -78,5 +78,11 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 * [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_5/Actuarial_Modelling_Chap5_Candidate_Questions.pdf)] 
 
 ## 6. 车险无赔款优待理论 NCD/Bonus-Malus System
+### 作业评讲 Homework
+* [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Actuarial_Modelling_Answers_Chap_6.pdf)]
+* Codes and Data for replication
+  * Question 3: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Question_3.Rmd)]
+  * Question 4: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Question_4.Rmd)] [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Qusetion_4.xlsx)]
+  * Question 5: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Question_5.Rmd)]
 ### 源哥期末大押题 Sample Questions
 * [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Actuarial_Modelling_Chap6_Candidate_Questions.pdf)] 

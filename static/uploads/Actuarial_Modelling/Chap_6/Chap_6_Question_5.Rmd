@@ -1,0 +1,24 @@
+---
+title: "Chap 6第5题参考答案"
+author: "Yuan Zhuang"
+date: "2023-12-23"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    keep_tex: true
+---
+```{r}
+# 录入系数矩阵
+a <- c(0.7, -1, 0, 0.2, 0, 0, 0, 0.7, 
+       -1, 0, 0.2, 0, 0, 0, 0.7, -1, 
+       0, 0.2, 0, 0, 0, 0.7, -1, 0, 
+       0, 0, 0, 0, 0.7, -0.3, 
+       1, 1, 1, 1, 1, 1)
+A <- matrix(a, ncol=6, byrow=T)
+b <- c(0,0,0,0,0,1)
+# 解A %*% x = b
+solve(A,b)
+```

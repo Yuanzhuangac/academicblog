@@ -1,0 +1,23 @@
+---
+title: "Chap 6第3题参考答案"
+author: "Yuan Zhuang"
+date: "2023-12-23"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    keep_tex: true
+---
+# 输出多步转移的结果
+
+```{r}
+# 制作相应转移概率矩阵
+ex1<-c(0.3, 0.7, 0, 0.3, 0, 0.7, 0.1, 0.2, 0.7)
+P1 <- matrix(ex1, ncol=3, byrow=T)
+P2 <- P1%*%P1
+P4 <- P2%*%P2
+P8 <- P4%*%P4
+P8
+```

@@ -1,0 +1,74 @@
+---
+title: "Chap 6第4题参考答案"
+author: "Yuan Zhuang"
+date: "2023-12-23"
+documentclass: ctexart
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    keep_tex: true
+---
+# 1. 制作转移概率和计算多步转移
+
+```{r}
+# 制作转移概率矩阵
+ex1<-c(0.3, 0.7, 0, 0.3, 0, 0.7, 0.1, 0.2, 0.7)
+P1 <- matrix(ex1, ncol=3, byrow=T)
+# 生成一些多步转移概率
+P2 <- P1 %*% P1
+P4 <- P2 %*% P2
+P5 <- P4 %*% P1
+P10 <- P5 %*% P5
+P15 <- P10 %*% P5
+```
+
+# 2. 计算各步比例
+
+```{r}
+# 初始比例为1,0,0
+distribution_at_first <- c(1,0,0)
+# 记录后续比例
+distribution_each_time <- distribution_at_first
+# 先计算1-6时各状态所占比例
+for (i in 1:6){
+  if (i == 1){
+    dis <- distribution_at_first %*% P1
+  }
+  else{
+    dis <- dis %*% P1
+  }
+  distribution_each_time <- rbind(distribution_each_time,
+                                  dis)
+}
+# 计算p10
+# p6 * P4
+dis <- dis %*% P4
+distribution_each_time <- rbind(distribution_each_time,
+                                  dis)
+# 计算p15
+# p10 * P5
+dis <- dis %*% P5
+distribution_each_time <- rbind(distribution_each_time,
+                                  dis)
+# 计算p30
+# p15 * P15
+dis <- dis %*% P15
+distribution_each_time <- rbind(distribution_each_time,
+                                  dis)
+```
+
+# 3. 计算各步纯保费
+```{r}
+# 整理结果，更改列名行名
+result <- as.data.frame(distribution_each_time)
+n <- c(0,1,2,3,4,5,6,10,15,30)
+result <- cbind(n, result)
+colnames(result) <- c("n","p1","p2","p3")
+rownames(result) <- c()
+# 计算纯保费
+result$Expected_Premiums <- (600*result$p1 + 480*result$p2 + 360*result$p3)*2000
+result
+```
+
