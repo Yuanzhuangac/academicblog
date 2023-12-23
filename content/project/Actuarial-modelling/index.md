@@ -14,7 +14,7 @@ image:
 
 <b>TA:</b> Yuan Zhuang（助教：庄源）
 
-<b>Many thanks to:</b> Mengya Yue, Qingxiao Liu （岳梦雅，刘庆晓）
+<b>Many thanks to:</b> Mengya Yue, Qingxiao Liu （特别鸣谢：岳梦雅，刘庆晓）
 
 <p>&#10071;通知</p>
 
@@ -82,7 +82,7 @@ Actuarial Science. 2007, CRC Press. [[Download](https://yuanzhuang.xyz/uploads/A
 * [[Answers and comments](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Actuarial_Modelling_Answers_Chap_6.pdf)]
 * Codes and Data for replication
   * Question 3: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Question_3.Rmd)]
-  * Question 4: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Question_4.Rmd)] [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Qusetion_4.xlsx)]
+  * Question 4: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Question_4.Rmd)] [[EXCEL](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Question_4.xlsx)]
   * Question 5: [[Rmarkdown](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Chap_6_Question_5.Rmd)]
 ### 源哥期末大押题 Sample Questions
 * [[PDF](https://yuanzhuang.xyz/uploads/Actuarial_Modelling/Chap_6/Actuarial_Modelling_Chap6_Candidate_Questions.pdf)] 
