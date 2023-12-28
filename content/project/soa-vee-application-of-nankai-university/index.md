@@ -1,7 +1,7 @@
 ---
 title: SOA VEE Application of Nankai University
 date: 2023-12-28T12:38:16.076Z
-summary: ﻿<b>主持：</b> 张连增教授 <br> <b>翻译及申请：</b>庄源
+summary: "<b>主持：</b> 张连增教授 <br> <b>翻译及申请：</b>庄源"
 draft: false
 featured: false
 image:
