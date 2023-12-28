@@ -23,6 +23,6 @@ summary: "<b>主持：</b> 张连增教授 <br> <b>教纲翻译及申请：</b> 
 ## 1. 第一轮申请：本科5门课程
 * Accounting（对应本科课程：会计学，课程代码FINA0112）: [[Download](https://yuanzhuang.xyz/uploads/VEE/Accounting_Description_and_syllabus_Nankai_University.pdf)]
 * Corporate Finance（对应本科课程：公司金融，课程代码FINA0115）:[[Download](https://yuanzhuang.xyz/uploads/VEE/Corporate_Finance_Description_and_syllabus_Nankai_University.pdf)]
-* Mathematical Statistics（对应本科课程：数理统计，课程代码FINA0110）：Pending
+* Mathematical Statistics（对应本科课程：数理统计，课程代码FINA0110）：[[Download](https://yuanzhuang.xyz/uploads/VEE/Mathematical_Statistics_Description_and_syllabus_Nankai_University.pdf)]
 * Microeconomics（对应本科课程：微观经济学）：Pending
 * Macroeconomics（对应本科课程：宏观经济学）：Pending
