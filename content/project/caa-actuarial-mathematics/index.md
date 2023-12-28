@@ -1,7 +1,7 @@
 ---
 title: CAA Actuarial Mathematics
 date: 2023-12-12T03:29:34.239Z
-summary: <b>Chief Editor:</b> Prof. Lianzeng Zhang (张连增教授)
+summary: "<b>Chief Editor:</b> Prof. Lianzeng Zhang (张连增教授)"
 draft: false
 featured: false
 image:

@@ -3,7 +3,7 @@ title: SOA VEE Application of Nankai University
 date: 2023-12-28T09:32:03.414Z
 draft: false
 featured: false
-image:
+summary: "<b>主持：</b> 张连增教授 <br> <b>教纲翻译及申请：</b> 庄源"
   filename: featured
   focal_point: Smart
   preview_only: false
@@ -12,7 +12,7 @@ image:
 
 <b>教纲翻译及申请：</b>庄源
 
-<b>特别鸣谢：</b>1. 孙佳美副教授为专硕课程应用统计分析和风险建模统计方法申请VEE；
+<b>特别鸣谢：</b>1. 孙佳美副教授为两门所任教专硕课程申请VEE；
 
 2. 陈孝伟教授整理专硕课程保险公司财务管理的教纲；
 
@@ -20,8 +20,8 @@ image:
 
 <p>&#10071;本网址记录了南开大学SOA VEE课程申请材料，以供未来重新申请时参考。如需Word文档，请向庄源（zhuangyuanzyx@gmail.com）索要。</p>
 
-## 1. 第一轮申请：本科4门课程
-* Accounting（对应本科课程：会计学，课程代码FINA0112）: 
+## 1. 第一轮申请：本科5门课程
+* Accounting（对应本科课程：会计学，课程代码FINA0112）: [[Download](https://yuanzhuang.xyz/uploads/VEE/Accounting_Description_and_syllabus_Nankai_University.pdf)]
 * Corporate Finance（对应本科课程：公司金融，课程代码FINA0115）:[[Download](https://yuanzhuang.xyz/uploads/VEE/Corporate_Finance_Description_and_syllabus_Nankai_University.pdf)]
 * Mathematical Statistics（对应本科课程：数理统计，课程代码FINA0110）：Pending
 * Microeconomics（对应本科课程：微观经济学）：Pending
