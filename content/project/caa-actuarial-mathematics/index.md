@@ -15,7 +15,7 @@ image:
 
 <p>&#10071;本网址记录了中国精算师协会准精算师科目《精算数学》的全部编撰过程文档，以供参考。最终出版物以市面售卖书本为准。</p>
 
-## 1. 培训 Training Course
+## 1. Training Course 培训 
 * Teaching: Lianzeng Zhang（教学：张连增教授）
 * Tutorial: Yuan Zhuang（讲义编写：庄源）
 
@@ -47,8 +47,10 @@ image:
 * <b>Table: Non-life insurance reserve（非寿险准备金评估的所有表格和计算过程）</b> [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Non_Life_reserve.xlsx)]
 
 ## 5. Communication 内部审稿沟通（张连增教授与庄源）
-* Chap 1：非寿险精算中的统计方法 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch1.pdf)]
-* Chap 2：非寿险精算费率厘定 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch2.pdf)]
-* Chap 3：非寿险精算费率校正 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch3.pdf)]
-* Chap 4：非寿险准备金评估 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch4.pdf)]
-* Chap 5：再保险中的精算方法 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch5.pdf)] 
+* Chap 1：利息的基本概念 [[Download](https://yuanzhuang.xyz/uploads/CAA/Interest_Theory/Interest_revise_Ch1.pdf)]
+* Chap 2：年金 [[Download](https://yuanzhuang.xyz/uploads/CAA/Interest_Theory/Interest_revise_Ch2.pdf)]
+* Chap 13：非寿险精算中的统计方法 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch1.pdf)]
+* Chap 14：非寿险精算费率厘定 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch2.pdf)]
+* Chap 15：非寿险精算费率校正 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch3.pdf)]
+* Chap 16：非寿险准备金评估 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch4.pdf)]
+* Chap 17：再保险中的精算方法 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch5.pdf)] 
