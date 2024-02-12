@@ -49,6 +49,7 @@ image:
 ## 5. Communication 内部审稿沟通（张连增教授与庄源）
 * Chap 1：利息的基本概念 [[Download](https://yuanzhuang.xyz/uploads/CAA/Interest_Theory/Interest_revise_Ch1.pdf)]
 * Chap 2：年金 [[Download](https://yuanzhuang.xyz/uploads/CAA/Interest_Theory/Interest_revise_Ch2.pdf)]
+* Chap 4：债务偿还 [[Download](https://yuanzhuang.xyz/uploads/CAA/Interest_Theory/Interest_revise_Ch4.pdf)]
 * Chap 13：非寿险精算中的统计方法 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch1.pdf)]
 * Chap 14：非寿险精算费率厘定 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch2.pdf)]
 * Chap 15：非寿险精算费率校正 [[Download](https://yuanzhuang.xyz/uploads/CAA/Non_Life/Nonlife_revise_Ch3.pdf)]

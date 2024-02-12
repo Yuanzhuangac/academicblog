@@ -3,9 +3,11 @@ title: Scenario Analysis of Correlation Matrix for Minimum Capital Requirement
   of Non-Life Insurance Risk under C-ROSS (in Chinese)
 publication_types:
   - "2"
+publication: "保险研究"
 authors:
   - Lianzeng Zhang
-  - Yuan Zhuang
+  - Admin
+date: "2023-08-01"
 abstract: Non-life risks under C-ROSS are aggregated using correlation matrix,
   and scenario testing of correlation assumption is required for prudential
   supervision and capital management purposes. Due to the nature of the
@@ -39,7 +41,12 @@ draft: false
 featured: false
 tags:
   - C-ROSS
+  - Nonlife Insurance
 categories: []
+links:
+- name: "Slide"
+  url: "https://yuanzhuang.xyz/uploads/Correlation-matrix-beamer.pdf"
+url_pdf: "https://kns.cnki.net/kcms2/article/abstract?v=-93ivAxQXRqzzcNySdFUwk9-dmhl5TXUfvG6GzxDfDLVrTNEsPtz2q5pg0vmNmFoHN1SIhNDuIcYp84e8ub8g8SeIYA9egyjG_QYkQW17KBOu81515Ct-3cwQhtZtWT7IiQxYrTeJCPg0Mq9h9UBtA==&uniplatform=NZKPT&language=CHS"
 image:
   filename: featured.jpg
   focal_point: Smart
