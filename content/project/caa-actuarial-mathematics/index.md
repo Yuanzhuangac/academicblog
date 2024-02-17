@@ -1,9 +1,13 @@
 ---
 title: CAA Actuarial Mathematics
 date: 2023-12-12T03:29:34.239Z
-summary: "中国精算师协会 精算数学教材编写"
+summary: Textbook for China Association of Actuarie
 draft: false
 featured: false
+tags:
+  - Textbook
+  - reports and contest deliverables
+categories: []
 image:
   filename: featured
   focal_point: Smart
