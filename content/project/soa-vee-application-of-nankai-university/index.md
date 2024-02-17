@@ -1,7 +1,7 @@
 ---
 title: SOA VEE Application of Nankai University
 date: 2023-12-28T12:38:16.076Z
-summary: ""
+summary: " Translation"
 draft: false
 featured: false
 tags:
