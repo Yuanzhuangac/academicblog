@@ -26,12 +26,12 @@ sections:
       # To filter by a specific tag, set `tag` to an existing tag name.
       # To remove the toolbar, delete the entire `filter_button` block.
       # buttons:
-        - name: All
-          tag: '*'
-        - name: Teaching Assistant
-          tag: Teaching Assistant
-        - name: Textbook and reports
-          tag: Textbook and reports
+      #  - name: All
+      #    tag: '*'
+      #  - name: Teaching Assistant
+      #    tag: Teaching Assistant
+      #  - name: Textbook and reports
+      #    tag: Textbook and reports
     design:
       # Choose how many columns the section has. Valid values: '1' or '2'.
       columns: '1'
