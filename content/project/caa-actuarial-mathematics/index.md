@@ -1,12 +1,11 @@
 ---
 title: CAA Actuarial Mathematics
 date: 2023-12-12T03:29:34.239Z
-summary: Textbook for China Association of Actuarie
+summary: Textbook for China Association of Actuaries
 draft: false
 featured: false
 tags:
-  - Textbook
-  - reports and contest deliverables
+  - Textbook and reports
 categories: []
 image:
   filename: featured
