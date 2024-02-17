@@ -1,9 +1,12 @@
 ---
-title: Spring 2024 Introduction to Actuarial Science
+title: Spring 2024 Basic Actuarial Science
 date: 2024-02-17T13:51:39.807Z
+summary: <b>Instructor:</b> Prof. Xiaowei Chen <br> <b>Teaching Assistant:</b>
+  Yuan Zhuang
 draft: false
 featured: false
-summary: "<b>Instructor:</b> Prof. Xiaowei Chen <br> <b>Teaching Assistant:</b> Yuan Zhuang"
+tags:
+  - Teaching Assistant
 image:
   filename: featured
   focal_point: Smart
