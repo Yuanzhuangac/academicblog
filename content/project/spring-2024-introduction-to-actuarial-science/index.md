@@ -19,4 +19,18 @@ image:
 ## 课本 Textbook
 自编讲义与PPT
 
-## 1. 精算与精算职业
+## 1. 精算与精算职业 Actuarial Profession
+[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_1_Actuarial_Profession.pdf)]
+
+## 2. 生命表 Life Table
+[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_2_Basic_Life_Insurance_Mathematics.pdf)]
+### 作业 Homework
+[[Homework](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Table/Homework1.pdf)] (Deadline: 27 March, 2024)
+### 作业解答
+Coming soon
+
+## 3. 寿险定价 Life Insurance Pricing
+[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_2_Basic_Life_Insurance_Mathematics.pdf)]（Same as slide used in Life Table）
+
+## 4. 寿险准备金 Life Insurance Reserving
+[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_2_Basic_Life_Insurance_Mathematics.pdf)]（Same as slide used in Life Table）
