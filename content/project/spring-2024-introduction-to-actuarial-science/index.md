@@ -25,7 +25,9 @@ Chap 1：Actuarial_Profession [[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_A
 ## 2. 生命表 Life Table
 Chap 2：Basic Life Insurance Mathematics：[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_2_Basic_Life_Insurance_Mathematics.pdf)]
 ### 作业 Homework
-[[Homework](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Table/Homework1.pdf)] (Deadline: 27 March, 2024)
+[[Homework](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Table/Homework1.pdf)] (Deadline: 21 March, 2024)
+### 作业答案与评讲 Answers and Discussion
+
 ### 作业解答
 Coming soon
 
