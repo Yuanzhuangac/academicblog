@@ -27,9 +27,8 @@ Chap 2：Basic Life Insurance Mathematics：[[Slide](https://yuanzhuang.xyz/uplo
 ### 作业 Homework
 [[Homework](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Table/Homework1.pdf)] (Deadline: 21 March, 2024)
 ### 作业答案与评讲 Answers and Discussion
-
-### 作业解答
-Coming soon
+[[Answers and Comments](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Table/Basic_Actuarial_Science_Hw1_Answers_and_Comments.pdf)]
+[[Related EXCEL File](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Table/HW1_CL1_Answer.xlsx)]
 
 ## 3. 寿险定价 Life Insurance Pricing
 Chap 2：Basic Life Insurance Mathematics：[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_2_Basic_Life_Insurance_Mathematics.pdf)]（Same as slide used in Life Table）
