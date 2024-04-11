@@ -32,8 +32,12 @@ Chap 2：Basic Life Insurance Mathematics：[[Slide](https://yuanzhuang.xyz/uplo
 
 ## 3. 寿险定价 Life Insurance Pricing
 Chap 2：Basic Life Insurance Mathematics：[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_2_Basic_Life_Insurance_Mathematics.pdf)]（Same as slide used in Life Table）
+### 作业 Homework
+[[Homework](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Pricing/Homework2.pdf)] (Deadline: 12 April, 2024)
+### 作业答案与评讲 Answers and Discussion
+[[Answers and Comments](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Pricing/Basic_Actuarial_Science_Hw2_Answers_and_Comments.pdf)]
+[[Related EXCEL File](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Pricing/HW2_Q2_Answer.xlsx)]
 
-https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Pricing/HW2_Q2_Answer.xlsx
 
 ## 4. 寿险准备金 Life Insurance Reserving
 Chap 2：Basic Life Insurance Mathematics：[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_2_Basic_Life_Insurance_Mathematics.pdf)]（Same as slide used in Life Table）
