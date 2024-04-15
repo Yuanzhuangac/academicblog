@@ -1,6 +1,7 @@
 ---
 title: Fluctuations of Maxima
 subtitle: Presentation of the EVT workshop directed by Prof. Jinzhu Li
+summary: Presentation of the EVT workshop directed by Prof. Jinzhu Li
 date: 2024-04-15T11:22:56.457Z
 draft: false
 featured: false
