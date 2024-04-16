@@ -28,7 +28,7 @@ x <- seq(from = -2, to = 5, length.out = 10000)
 df_gumbel <- pGumbel(x, mu = 0, sigma = 1)
 exp_5 <- pexp(x+log(5))^5
 exp_10 <- pexp(x+log(10))^10
-plot(x, df_gumbel, col = "blue",xlab = "x",ylab ="DF",lwd = 0.5, cex = 0.25, ylim = c(0,1))
+plot(x, df_gumbel, col = "blue",xlab = "x",ylab ="Relative Error",lwd = 0.5, cex = 0.25, ylim = c(0,1))
 lines(x, exp_5, col = "red")
 lines(x, exp_10, col = "green")
 legend("topright",pch=c(15,15),legend=c("Gumbel","n = 5","n = 10"),col=c("blue","red","green"),bty="n")
@@ -51,7 +51,7 @@ legend("topright",pch=c(15,15),legend=c("n = 5","n = 10","n = 20"),col=c("blue",
 df_frechet <- pfrechet(x, loc = 0, scale = 1, shape = 1)
 cauchy_5 <- pcauchy(x*5/pi)^5
 cauchy_10 <- pcauchy(x*10/pi)^10
-plot(x, df_frechet, col = "blue",xlab = "x",ylab ="Relative Error",lwd = 0.5, cex = 0.25, ylim = c(0,1))
+plot(x, df_frechet, col = "blue",xlab = "x",ylab ="DF",lwd = 0.5, cex = 0.25, ylim = c(0,1))
 lines(x, cauchy_5, col = "red")
 lines(x, cauchy_10, col = "green")
 legend("topright",pch=c(15,15),legend=c("Fréchet","n = 5","n = 10"),col=c("blue","red","green"),bty="n")

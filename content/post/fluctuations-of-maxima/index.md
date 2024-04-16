@@ -10,8 +10,12 @@ image:
   focal_point: Smart
   preview_only: false
 ---
-Slides: (Pending)
+# “CLT in non-Gaussian World” 
 
-Handouts: (Pending)
+Slides （Updated on Apr 16th）: [[Download](https://yuanzhuang.xyz/uploads/EVT/Slide_Chap3_Yuan_Zhuang.pdf)]
+
+
+Handouts （Updated on Apr 16th）: [[Download](https://yuanzhuang.xyz/uploads/EVT/Appendix_Chap3_Yuan_Zhuang.pdf)]
+
 
 R Codes：Sec 3.2 [[Download](https://yuanzhuang.xyz/uploads/EVT/EVT_Sec_3_2.Rmd)]
