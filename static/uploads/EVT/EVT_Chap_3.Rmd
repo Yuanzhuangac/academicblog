@@ -1,0 +1,198 @@
+---
+title: "EVT_Chap_3"
+author: "Yuan Zhuang"
+date: "2024-05-07"
+output: html_document
+---
+# 3.2.4
+
+```{r, warning=FALSE, message=FALSE}
+library(QRM)
+library(brms)
+x <- seq(from = -5, to = 5, length.out = 10000)
+dens_gumbel <- dGumbel(x, mu = 0, sigma = 1, log = FALSE)
+dens_weibull <- ifelse(x > 0, 0, exp(x))
+dens_frechet <- dfrechet(x, loc = 0, scale = 1, shape = 1)
+plot(x, dens_gumbel, col = "blue",xlab = "x",ylab ="Density",lwd = 0.5, cex = 0.25, ylim = c(0,1))
+lines(x, dens_weibull, col = "red")
+lines(x, dens_frechet, col = "green")
+legend("topright",pch=c(15,15),legend=c("Weibull","Gumbel","Fréchet"),col=c("red","blue","green"),bty="n")
+```
+
+# 3.2.9
+## Up
+```{r, warning=FALSE, message=FALSE}
+library(QRM)
+library(brms)
+x <- seq(from = -2, to = 5, length.out = 10000)
+df_gumbel <- pGumbel(x, mu = 0, sigma = 1)
+exp_5 <- pexp(x+log(5))^5
+exp_10 <- pexp(x+log(10))^10
+plot(x, df_gumbel, col = "blue",xlab = "x",ylab ="DF",lwd = 0.5, cex = 0.25, ylim = c(0,1))
+lines(x, exp_5, col = "red")
+lines(x, exp_10, col = "green")
+legend("topright",pch=c(15,15),legend=c("Gumbel","n = 5","n = 10"),col=c("blue","red","green"),bty="n")
+```
+
+## Down
+```{r, warning=FALSE, message=FALSE}
+exp_5_error <- (1-pexp(x+log(5))^5)/(1-df_gumbel)-1
+exp_10_error <- (1-pexp(x+log(10))^10)/(1-df_gumbel)-1
+exp_20_error <- (1-pexp(x+log(20))^20)/(1-df_gumbel)-1
+plot(x, exp_5_error, col = "blue",xlab = "x",ylab ="Relative Error",lwd = 0.5, cex = 0.25, ylim = c(0,0.08))
+lines(x, exp_10_error, col = "red")
+lines(x, exp_20_error, col = "green")
+legend("topright",pch=c(15,15),legend=c("n = 5","n = 10","n = 20"),col=c("blue","red","green"),bty="n")
+```
+
+# 3.2.10
+## Up
+```{r}
+df_frechet <- pfrechet(x, loc = 0, scale = 1, shape = 1)
+cauchy_5 <- pcauchy(x*5/pi)^5
+cauchy_10 <- pcauchy(x*10/pi)^10
+plot(x, df_frechet, col = "blue",xlab = "x",ylab ="DF",lwd = 0.5, cex = 0.25, ylim = c(0,1))
+lines(x, cauchy_5, col = "red")
+lines(x, cauchy_10, col = "green")
+legend("topright",pch=c(15,15),legend=c("Fréchet","n = 5","n = 10"),col=c("blue","red","green"),bty="n")
+```
+
+## Down
+```{r}
+x <- seq(from = -2, to = 20, length.out = 100000)
+df_frechet <- pfrechet(x, loc = 0, scale = 1, shape = 1)
+cauchy_5_error <- (1-pcauchy(x*5/pi)^5)/(1-df_frechet)-1
+cauchy_10_error <- (1-pcauchy(x*10/pi)^10)/(1-df_frechet)-1
+cauchy_20_error <- (1-pcauchy(x*20/pi)^20)/(1-df_frechet)-1
+plot(x, cauchy_5_error, col = "blue",xlab = "x",ylab ="Relative Error",lwd = 0.5, cex = 0.25, xlim = c(0,20), ylim = c(-0.08,0.02))
+lines(x, cauchy_10_error, col = "red")
+lines(x, cauchy_20_error, col = "green")
+legend("topright",pch=c(15,15),legend=c("n = 5","n = 10","n = 20"),col=c("blue","red","green"),bty="n")
+```
+
+# 3.3.30
+
+以下为Gumbel拟合iid正态分布的公式：
+
+$$
+\sqrt{2 \ln n}\left(M_n-\sqrt{2 \ln n}+\frac{\ln \ln n+\ln 4 \pi}{2(2 \ln n)^{1 / 2}}\right) \xrightarrow{d} A
+$$
+
+```{r}
+# 该函数负责将x做上面公式中的逆变换
+trans <- function(x,n){
+  y <- x/(sqrt(2*log(n))) + sqrt(2*log(n)) - (log(log(n))+log(4*pi))/(2*sqrt(2*log(n)))
+  return(y)
+}
+```
+
+## Up
+
+```{r, warning=FALSE, message=FALSE}
+library(QRM)
+x <- seq(from = -3, to = 6, length.out = 10000)
+df_gumbel <- pGumbel(x, mu = 0, sigma = 1)
+normal_5 <- pnorm(trans(x,5))^5
+normal_10 <- pnorm(trans(x,10))^10
+plot(x, df_gumbel, col = "blue",xlab = "x",ylab ="DF",lwd = 0.5, cex = 0.25, ylim = c(0,1))
+lines(x, normal_5, col = "red")
+lines(x, normal_10, col = "green")
+legend("topright",pch=c(15,15),legend=c("Gumbel","n = 5","n = 10"),col=c("blue","red","green"),bty="n")
+```
+
+## Down
+Relative Error
+```{r, warning=FALSE, message=FALSE}
+x <- seq(from = -5, to = 10, length.out = 100000)
+df_gumbel <- pGumbel(x, mu = 0, sigma = 1)
+normal_5_error <- (1-pnorm(trans(x,5))^5)/(1-df_gumbel)-1
+normal_10_error <- (1-pnorm(trans(x,10))^10)/(1-df_gumbel)-1
+normal_20_error <- (1-pnorm(trans(x,20))^20)/(1-df_gumbel)-1
+plot(x, normal_5_error, col = "blue",xlab = "x",ylab ="Relative Error",lwd = 0.5, cex = 0.25, xlim = c(-5,10), ylim = c(-1,0))
+lines(x, normal_10_error, col = "red")
+lines(x, normal_20_error, col = "green")
+legend("topright",pch=c(15,15),legend=c("n = 5","n = 10","n = 20"),col=c("blue","red","green"),bty="n")
+```
+
+# 3.4.10
+不同$\xi$下的GPD密度函数
+```{r}
+x <- seq(from = 0, to = 5, length.out = 100000)
+GPD_xi_0 <- dGPD(x, xi = 0, beta = 1)
+GPD_xi_n025 <- dGPD(x, xi = -0.25, beta = 1)
+GPD_xi_05 <- dGPD(x, xi = 0.5, beta = 1)
+plot(x, GPD_xi_0, col = "blue",xlab = "x",ylab ="Density",lwd = 0.5, cex = 0.25,xlim = c(0,5), ylim = c(0,1))
+lines(x, GPD_xi_n025, col = "red")
+lines(x, GPD_xi_05, col = "green")
+legend("topright",pch=c(15,15),legend=c("xi = 0","xi = -0.25","xi = 0.5"),col=c("blue","red","green"),bty="n")
+```
+
+# 3.4.11
+不同$\xi$（负数）下的GPD密度函数
+```{r}
+x <- seq(from = 0, to = 2, length.out = 100000)
+GPD_xi_n05 <- dGPD(x, xi = -0.5, beta = 1)
+GPD_xi_n07 <- dGPD(x, xi = -0.7, beta = 1)
+GPD_xi_n1 <- dGPD(x, xi = -1, beta = 1)
+GPD_xi_n125 <- dGPD(x, xi = -1.25, beta = 1)
+plot(x, GPD_xi_n05, col = "blue",xlab = "x",ylab ="Density",lwd = 0.5, cex = 0.25,xlim = c(0,2), ylim = c(0,2.5))
+lines(x, GPD_xi_n07, col = "red")
+lines(x, GPD_xi_n1, col = "green")
+lines(x, GPD_xi_n125, col = "yellow")
+text(1.7, 0.3, cex = 0.75, expression(xi == -0.5))
+text(1.17, 0.7, cex = 0.75, expression(xi == -0.7))
+text(0.95, 1.13, cex = 0.75, expression(xi == -1))
+text(0.5, 1.5, cex = 0.75, expression(xi == -1.25))
+```
+
+# 3.4.12
+不同$\xi$下的GPD累积分布函数
+```{r}
+x <- seq(from = 0, to = 8, length.out = 100000)
+GPD_xi_0 <- pGPD(x, xi = 0, beta = 1)
+GPD_xi_05 <- pGPD(x, xi = 0.5, beta = 1)
+GPD_xi_n05 <- pGPD(x, xi = -0.5, beta = 1)
+plot(x, GPD_xi_0, lty = 1,xlab = "x",ylab ="DF",lwd = 0.5, cex = 0.25,xlim = c(0,5), ylim = c(0,1))
+lines(x, GPD_xi_05, lty = 3)
+lines(x, GPD_xi_n05, lty = 5)
+legend("bottomright",pch=c(15,15),legend=c("xi = 0","xi = 0.5","xi = -0.5"),lty=c(1,3,5),bty="n")
+```
+
+# 3.5.5
+正态分布
+```{r}
+library(ggplot2)
+set.seed(41805609)
+standnorm <- rnorm(n = 100000)
+n <- 1:100000
+Value <- cummax(standnorm)/(sqrt(2*log(index)))
+df <- data.frame(cbind(Value, n))
+ggplot(data=df, aes(x=n, y=Value)) +
+  geom_line()
+```
+
+# 3.5.7
+指数分布
+```{r}
+library(ggplot2)
+set.seed(41805609)
+standexp <- rexp(n = 100000)
+n <- 1:100000
+Value <- cummax(standexp)/(log(index))
+df <- data.frame(cbind(Value, n))
+ggplot(data=df, aes(x=n, y=Value)) +
+  geom_line()
+```
+
+# 3.5.9
+均匀分布
+```{r}
+library(ggplot2)
+set.seed(41805609)
+uni <- runif(n = 400)
+n <- 1:400
+Value <- cummax(uni)
+df <- data.frame(cbind(Value, n))
+ggplot(data=df, aes(x=n, y=Value)) +
+  geom_line()
+```

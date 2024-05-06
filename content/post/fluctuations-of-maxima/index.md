@@ -10,12 +10,26 @@ image:
   focal_point: Smart
   preview_only: false
 ---
-# “CLT in non-Gaussian World” 
+## “CLT in non-Gaussian World” 
 
-Slides （Updated on Apr 16th）: [[Download](https://yuanzhuang.xyz/uploads/EVT/Slide_Chap3_Yuan_Zhuang.pdf)]
-
-
-Handouts （Updated on Apr 16th）: [[Download](https://yuanzhuang.xyz/uploads/EVT/Appendix_Chap3_Yuan_Zhuang.pdf)]
+**Slides （Updated on Apr 16th）:** [[Download](https://yuanzhuang.xyz/uploads/EVT/Slide_Chap3_Yuan_Zhuang.pdf)]
 
 
-R Codes：Sec 3.2 [[Download](https://yuanzhuang.xyz/uploads/EVT/EVT_Sec_3_2.Rmd)]
+**Handouts （Updated on Apr 16th）:** [[Download](https://yuanzhuang.xyz/uploads/EVT/Appendix_Chap3_Yuan_Zhuang.pdf)]
+
+
+**R Codes：**Chap 3 （Updated on May 7th） [[Download](https://yuanzhuang.xyz/uploads/EVT/EVT_Chap_3.Rmd)]
+
+**R Shiny：**
+
+(1)Visualization of Fisher-Tippet-Gnedenko Theorem： [[Download](https://yuanzhuang.xyz/uploads/EVT/FTG.zip)]
+```r
+library(shiny)
+runUrl("https://yuanzhuang.xyz/uploads/EVT/FTG.zip")
+```
+
+(2)Sample Maxima Approximation using EVT：[[Download](https://yuanzhuang.xyz/uploads/EVT/FTGApproximation.zip)]
+```r
+library(shiny)
+runUrl("https://yuanzhuang.xyz/uploads/EVT/FTGApproximation.zip")
+```
