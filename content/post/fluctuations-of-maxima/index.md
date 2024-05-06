@@ -18,17 +18,17 @@ image:
 **Handouts （Updated on Apr 16th）:** [[Download](https://yuanzhuang.xyz/uploads/EVT/Appendix_Chap3_Yuan_Zhuang.pdf)]
 
 
-**R Codes：**Chap 3 （Updated on May 7th） [[Download](https://yuanzhuang.xyz/uploads/EVT/EVT_Chap_3.Rmd)]
+**R Codes （Updated on May 7th）:** [[Download](https://yuanzhuang.xyz/uploads/EVT/EVT_Chap_3.Rmd)]
 
 **R Shiny：**
 
-(1)Visualization of Fisher-Tippet-Gnedenko Theorem： [[Download](https://yuanzhuang.xyz/uploads/EVT/FTG.zip)]
+(1)Visualization of Fisher-Tippet-Gnedenko Theorem [[Download](https://yuanzhuang.xyz/uploads/EVT/FTG.zip)], or run the following code in R:
 ```r
 library(shiny)
 runUrl("https://yuanzhuang.xyz/uploads/EVT/FTG.zip")
 ```
 
-(2)Sample Maxima Approximation using EVT：[[Download](https://yuanzhuang.xyz/uploads/EVT/FTGApproximation.zip)]
+(2)Sample Maxima Approximation using EVT [[Download](https://yuanzhuang.xyz/uploads/EVT/FTGApproximation.zip)], or run the following code in R:
 ```r
 library(shiny)
 runUrl("https://yuanzhuang.xyz/uploads/EVT/FTGApproximation.zip")
