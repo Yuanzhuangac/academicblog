@@ -33,3 +33,9 @@ runUrl("https://yuanzhuang.xyz/uploads/EVT/FTG.zip")
 library(shiny)
 runUrl("https://yuanzhuang.xyz/uploads/EVT/FTGApproximation.zip")
 ```
+
+(3)GPD Visulization [[Download](https://yuanzhuang.xyz/uploads/EVT/GPD.zip)], or run the following code in R:
+```r
+library(shiny)
+runUrl("https://yuanzhuang.xyz/uploads/EVT/GPD.zip")
+```
