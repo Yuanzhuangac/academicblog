@@ -12,10 +12,10 @@ image:
 ---
 ## “CLT in non-Gaussian World” 
 
-**Slides （Updated on Apr 16th）:** [[Download](https://yuanzhuang.xyz/uploads/EVT/Slide_Chap3_Yuan_Zhuang.pdf)]
+**Slides （Updated on May 7th）:** [[Download](https://yuanzhuang.xyz/uploads/EVT/Slide_Chap3_Yuan_Zhuang.pdf)]
 
 
-**Handouts （Updated on Apr 16th）:** [[Download](https://yuanzhuang.xyz/uploads/EVT/Appendix_Chap3_Yuan_Zhuang.pdf)]
+**Handouts （Updated on May 7th）:** [[Download](https://yuanzhuang.xyz/uploads/EVT/Appendix_Chap3_Yuan_Zhuang.pdf)]
 
 
 **R Codes （Updated on May 7th）:** [[Download](https://yuanzhuang.xyz/uploads/EVT/EVT_Chap_3.Rmd)]
