@@ -49,3 +49,5 @@ Chap 2：Basic Life Insurance Mathematics：[[Slide](https://yuanzhuang.xyz/uplo
 ## 5. 非寿险精算 Nonlife Insurance Mathematics
 Chap 3：Nonlife Insurance Mathematics：[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_3_Nonlife_Insurance_Mathematics.pdf)]
 
+## 6. 保险公司资产负债管理 ALM in Insurance Companies
+Chap 4：ALM in Insurance Companies：[[Slide](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Slides/Chap_4_Asset_Liability_Management.pdf)]
