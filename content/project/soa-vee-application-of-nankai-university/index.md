@@ -31,3 +31,6 @@ image:
 * Mathematical Statistics（对应本科课程：数理统计，课程代码FINA0110）：[[Download](https://yuanzhuang.xyz/uploads/VEE/Mathematical_Statistics_Description_and_syllabus_Nankai_University.pdf)]
 * Microeconomics（对应本科课程：中级微观经济学，课程代码FINA0116）：[[Download](https://yuanzhuang.xyz/uploads/VEE/Intermediate_Microeconomics_Description_and_syllabus_Nankai_University.pdf)]
 * Macroeconomics（对应本科课程：中级宏观经济学，课程代码FINA0117）：[[Download](https://yuanzhuang.xyz/uploads/VEE/Intermediate_Macroeconomics_Description_and_syllabus_Nankai_University.pdf)]
+
+## 2. 申请指南
+* 申请指南 [[Download](https://yuanzhuang.xyz/uploads/VEE/VEE_Tutorial.pdf)]
