@@ -55,7 +55,7 @@ Chap 2：Basic Life Insurance Mathematics：[[Slide](https://yuanzhuang.xyz/uplo
 ### 作业 Homework
 [[Homework](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Reserving/Homework3.pdf)] (Deadline: 9 May, 2024)
 ### 作业答案与评讲 Answers and Discussion
-[[Answers and Comments](https://yuanzhuang.xyz/uploads/TA/Life_Reserving/Life_Pricing/Basic_Actuarial_Science_Hw3_Answers_and_Comments.pdf)]
+[[Answers and Comments](https://yuanzhuang.xyz/uploads/TA/Nonlife/Basic_Actuarial_Science_Hw3_Answers_and_Comments.pdf)]
 [[Related EXCEL File](https://yuanzhuang.xyz/uploads/TA/Basic_Actuarial_Science/Life_Reserving/HW3_Q1_Answer.xlsx)]
 
 ## 5. 非寿险精算 Nonlife Insurance Mathematics
