@@ -19,6 +19,9 @@ main:
 
 # Link to a PDF of your resume/CV from the menu.
 # To enable, copy your resume/CV to `static/uploads/resume.pdf` and uncomment the lines below.
-  - name: CV
+  - name: CV (Chinese)
     url: uploads/Yuanzhuang_cv.pdf
     weight: 70
+  - name: CV (English)
+    url: uploads/Yuanzhuang_cv.pdf
+    weight: 80
