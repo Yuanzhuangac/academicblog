@@ -26,11 +26,11 @@ image:
 
 ## 1. 第一轮申请：本科5门课程
 
-* Accounting（对应本科课程：会计学，课程代码FINA0112）: [[Download](https://yuanzhuang.xyz/uploads/VEE/Accounting_Description_and_syllabus_Nankai_University.pdf)]
-* Corporate Finance（对应本科课程：公司金融，课程代码FINA0115）:[[Download](https://yuanzhuang.xyz/uploads/VEE/Corporate_Finance_Description_and_syllabus_Nankai_University.pdf)]
-* Mathematical Statistics（对应本科课程：数理统计，课程代码FINA0110）：[[Download](https://yuanzhuang.xyz/uploads/VEE/Mathematical_Statistics_Description_and_syllabus_Nankai_University.pdf)]
-* Microeconomics（对应本科课程：中级微观经济学，课程代码FINA0116）：[[Download](https://yuanzhuang.xyz/uploads/VEE/Intermediate_Microeconomics_Description_and_syllabus_Nankai_University.pdf)]
-* Macroeconomics（对应本科课程：中级宏观经济学，课程代码FINA0117）：[[Download](https://yuanzhuang.xyz/uploads/VEE/Intermediate_Macroeconomics_Description_and_syllabus_Nankai_University.pdf)]
+* Accounting（对应本科课程：会计学，课程代码FINA0112）: [[Download](https://yuanzhuang.site/uploads/VEE/Accounting_Description_and_syllabus_Nankai_University.pdf)]
+* Corporate Finance（对应本科课程：公司金融，课程代码FINA0115）:[[Download](https://yuanzhuang.site/uploads/VEE/Corporate_Finance_Description_and_syllabus_Nankai_University.pdf)]
+* Mathematical Statistics（对应本科课程：数理统计，课程代码FINA0110）：[[Download](https://yuanzhuang.site/uploads/VEE/Mathematical_Statistics_Description_and_syllabus_Nankai_University.pdf)]
+* Microeconomics（对应本科课程：中级微观经济学，课程代码FINA0116）：[[Download](https://yuanzhuang.site/uploads/VEE/Intermediate_Microeconomics_Description_and_syllabus_Nankai_University.pdf)]
+* Macroeconomics（对应本科课程：中级宏观经济学，课程代码FINA0117）：[[Download](https://yuanzhuang.site/uploads/VEE/Intermediate_Macroeconomics_Description_and_syllabus_Nankai_University.pdf)]
 
 ## 2. 申请指南
-* 申请指南 [[Download](https://yuanzhuang.xyz/uploads/VEE/VEE_Tutorial.pdf)]
+* 申请指南 [[Download](https://yuanzhuang.site/uploads/VEE/VEE_Tutorial.pdf)]
