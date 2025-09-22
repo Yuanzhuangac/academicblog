@@ -412,7 +412,7 @@ for(i in 1:6) {
       size = 0.1
     ) +
       scale_fill_gradient2(
-        name = "PM2.5 Change\n(μg/m³)",
+        name = "PM2.5 Change",
         low = "blue",
         mid = "white",
         high = "red",
