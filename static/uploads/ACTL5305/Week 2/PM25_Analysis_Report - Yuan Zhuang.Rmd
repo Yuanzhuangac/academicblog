@@ -1,0 +1,458 @@
+---
+title: "PM2.5 Air Quality Analysis: Changes from 1999 to 2012"
+author: "Yuan Zhuang"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: flatly
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 9, fig.height = 5)
+```
+
+Hello everyone! I'm Yuan Zhuang, a new PhD student from the School of Risk & Actuarial Studies. 
+
+# Introduction
+
+The EPA Air Quality System publishes air quality data on a continuous basis. The data is a delimited file where fields are delimited with the '|' character and missing values are coded as blank fields. The fields are called: RD, Action.Code, State.Code, County.Code, Site.ID, Parameter, POC, Sample.Duration, Unit Method, Date, Start.Time, Sample.Value, etc. The air quality index on fine particulate matter air pollution (PM2.5) is in the column titled Sample.Value. More details on the descriptions of the data can be found at: https://aqs.epa.gov/aqsweb/airdata/FileFormats.html. The State.Code details in the dataset can be found here: https://www.mercercountypa.gov/dps/state_fips_code_listing.htm
+
+The two data files are named:
+1. Airpollution_1999.txt, and
+2. Airpollution_2012.txt
+
+# Research Question
+
+**Main Question:** Has PM2.5 levels decreased from 1999 to 2012?
+
+To make this analysis more specific and feasible, I refined the question to:
+- For the same county in 1999 and 2012 during the same month, has the monthly average PM2.5 decreased?
+- Which parts of the United States show improvements? Which counties have not improved?
+
+# Data Import and Processing
+
+## Loading Required Libraries
+
+```{r libraries}
+# Load required libraries
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(maps)
+library(usmap)
+library(viridis)
+```
+
+## Data Import Function
+
+```{r data_function}
+# Function to read and process PM2.5 data
+process_pm25_data <- function(file_path, year) {
+  cat("Processing", year, "data from:", file_path, "\n")
+  # Read the data file
+  # Skip the first two header lines and read with pipe delimiter
+  data <- read_delim(file_path, 
+                     delim = "|", 
+                     skip = 2,
+                     col_names = FALSE,
+                     show_col_types = FALSE)
+  
+  # Set column names based on the header information
+  col_names <- c("RD_RC", "Action_Code", "State_Code", "County_Code", "Site_ID", 
+                 "Parameter", "POC", "Sample_Duration", "Unit", "Method", 
+                 "Date", "Start_Time", "Sample_Value", "Null_Data_Code", 
+                 "Sampling_Frequency", "Monitor_Protocol_ID", "Qualifier_1", 
+                 "Qualifier_2", "Qualifier_3", "Qualifier_4", "Qualifier_5", 
+                 "Qualifier_6", "Qualifier_7", "Qualifier_8", "Qualifier_9", 
+                 "Qualifier_10", "Alternate_Method_Detectable_Limit", "Uncertainty")
+  
+  # Assign column names
+  names(data) <- col_names[1:ncol(data)]
+  
+  # Convert Sample_Value to numeric, keeping NA values
+  data$Sample_Value <- as.numeric(data$Sample_Value)
+  # Omit the last row, which is a comment in the data
+  data <- data[1:nrow(data)-1,]
+
+  # Group by State Code, County Code, Date, and Start Time
+  # Calculate mean Sample Value for each group
+  grouped_data <- data %>%
+    group_by(State_Code, County_Code, Date, Start_Time) %>%
+    summarise(
+      sample_value = if(all(is.na(Sample_Value))) {
+        NA  # If all values are NA, return NA
+      } else {
+        mean(Sample_Value, na.rm = TRUE)  # If any non-NA exists, omit NA values
+      },
+      .groups = 'drop'
+    )
+
+  return(grouped_data)
+}
+```
+
+## Data Processing Steps
+
+```{r data_processing}
+# Process 1999 data
+pm25_1999 <- process_pm25_data("Airpollution_1999.txt", 1999)
+
+# Process 2012 data
+pm25_2012 <- process_pm25_data("Airpollution_2012.txt", 2012)
+
+# Filter 2012 data to only include start_time = "00:00:00" for fair comparison with 1999
+# Since 1999 data only has start_time = "00:00:00"
+cat("\n=== Filtering 2012 data ===\n")
+cat("2012 data before filtering:", nrow(pm25_2012), "\n")
+
+# Since Start_Time is in hms format, we can convert it to character and filter
+pm25_2012 <- pm25_2012 %>% 
+  mutate(Start_Time_char = as.character(Start_Time)) %>%
+  filter(Start_Time_char == "00:00:00") %>%
+  select(-Start_Time_char)
+
+cat("2012 data after filtering (00:00:00 only):", nrow(pm25_2012), "\n")
+
+# Display summary statistics
+cat("\n=== Summary Statistics ===\n")
+cat("1999 data recordings:", nrow(pm25_1999), "\n")
+cat("2012 data recordings:", nrow(pm25_2012), "\n")
+```
+
+## Monthly Aggregation
+
+```{r monthly_aggregation}
+# Function to aggregate data by month
+aggregate_by_month <- function(data, year) {
+  cat("\n=== Aggregating", year, "data by month ===\n")
+  
+  # Convert Date to proper date format and extract month
+  data$Date_formatted <- as.Date(as.character(data$Date), format = "%Y%m%d")
+  data$Time <- format(data$Date_formatted, "%Y-%m")
+  data$Month <- as.numeric(substr(data$Time, 6, 7))  # Extract month number
+  
+  # Group by State Code, County Code, and Month, then calculate mean
+  monthly_data <- data %>%
+    group_by(State_Code, County_Code, Month) %>%
+    summarise(
+      sample_value = if(all(is.na(sample_value))) {
+        NA  # If all values are NA, return NA
+      } else {
+        mean(sample_value, na.rm = TRUE)  # If any non-NA exists, omit NA values
+      },
+      .groups = 'drop'
+    )
+  cat("Monthly aggregated data for", year, ":", nrow(monthly_data), "records\n")
+  return(monthly_data)
+}
+
+# Aggregate both datasets by month
+pm25_1999_monthly <- aggregate_by_month(pm25_1999, 1999)
+pm25_2012_monthly <- aggregate_by_month(pm25_2012, 2012)
+
+# Display monthly aggregation statistics
+cat("\n=== Monthly Aggregation Summary ===\n")
+cat("1999 monthly records:", nrow(pm25_1999_monthly), "\n")
+cat("2012 monthly records:", nrow(pm25_2012_monthly), "\n")
+```
+
+# Data Quality Issues and Solutions
+
+## Issues Identified
+
+1. **Different recording frequencies**: 2012 data has much higher recording frequency than 1999. I addressed this by averaging the data to align granularity to county and month level, and by selecting only 00:00 records.
+
+2. **Systematic missing data in 2012**: The second half of 2012 data is systematically missing. Therefore, I focus the analysis on the first half of the year.
+
+3. **Systematic missing data of some counties in the US**: The data provided does not record all the information of US counties. For those not recorded, I skipped them.
+
+4. **Missing values**: This didn't significantly impact my analysis. When aggregating data and creating plots, I use `na.rm = TRUE` to handle most issues. If it affects plotting, I display those areas in gray.
+
+## Month Distribution Analysis
+
+This is to support the statement above: "The second half of 2012 data is systematically missing."
+
+```{r month_distribution}
+# Month Distribution Analysis using monthly data
+cat("\n=== Month Distribution Analysis ===\n")
+
+# Count records by month for each year
+month_counts_1999 <- pm25_1999_monthly %>%
+  count(Month) %>%
+  arrange(Month)
+
+month_counts_2012 <- pm25_2012_monthly %>%
+  count(Month) %>%
+  arrange(Month)
+
+# Check if 2012 data is concentrated in first 6 months
+months_1999 <- sort(unique(pm25_1999_monthly$Month))
+months_2012 <- sort(unique(pm25_2012_monthly$Month))
+
+cat("\n=== Analysis Results ===\n")
+cat("1999 has data for", length(months_1999), "months:", paste(months_1999, collapse = ", "), "\n")
+cat("2012 has data for", length(months_2012), "months:", paste(months_2012, collapse = ", "), "\n")
+```
+
+The following figure shows there is a lack of records in the second half of 2012.
+
+```{r}
+# Create complete month data for visualization
+all_months <- data.frame(Month = 1:12)
+
+# Merge with actual data to get complete picture
+month_data_1999 <- all_months %>%
+  left_join(month_counts_1999, by = "Month") %>%
+  mutate(n = ifelse(is.na(n), 0, n),
+         Year = "1999")
+
+month_data_2012 <- all_months %>%
+  left_join(month_counts_2012, by = "Month") %>%
+  mutate(n = ifelse(is.na(n), 0, n),
+         Year = "2012")
+
+# Combine data for plotting
+combined_data <- bind_rows(month_data_1999, month_data_2012)
+
+# Create count distribution plot
+p <- ggplot(combined_data, aes(x = Month, y = n, fill = Year)) +
+  geom_bar(stat = "identity", position = "dodge", alpha = 0.8, width = 0.7) +
+  scale_fill_manual(values = c("1999" = "steelblue", "2012" = "orange")) +
+  scale_x_continuous(breaks = 1:12, labels = 1:12) +
+  labs(title = "The Number of Aggregated Records in Each Month: 1999 vs 2012",
+       x = "Month",
+       y = "Number of Records",
+       fill = "Year") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 12),
+        legend.position = "bottom",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank()) +
+  geom_hline(yintercept = 0, color = "black", size = 0.5)
+
+print(p)
+
+# Save the plot
+ggsave("month_distribution_comparison.png", plot = p, width = 12, height = 8, dpi = 300)
+```
+
+
+# Main Analysis: PM2.5 Changes
+
+## Data Comparison Setup
+
+In this chunk, we merge the 1999 and 2012 dataset.
+
+```{r comparison_setup}
+# Main Analysis: Compare PM2.5 levels between 1999 and 2012
+cat("\n=== Main Analysis: PM2.5 Change from 1999 to 2012 ===\n")
+
+# Merge the two datasets by State_Code, County_Code, and Month
+# Only join where both datasets have the same location and month
+comparison_data <- pm25_1999_monthly %>%
+  select(State_Code, County_Code, Month, sample_value) %>%
+  rename(sample_value_1999 = sample_value) %>%
+  inner_join(
+    pm25_2012_monthly %>%
+      select(State_Code, County_Code, Month, sample_value) %>%
+      rename(sample_value_2012 = sample_value),
+    by = c("State_Code", "County_Code", "Month")
+  )
+
+# Calculate the difference (2012 - 1999)
+comparison_data$pm25_change <- comparison_data$sample_value_2012 - comparison_data$sample_value_1999
+
+# All rows in comparison_data now have both 1999 and 2012 data
+comparison_data_complete <- comparison_data
+
+cat("Total comparison pairs (same location and month):", nrow(comparison_data_complete), "\n")
+```
+
+## Summary Statistics
+
+It can be seen that about 85\% counties has witnessed a drop in PM2.5. So PM2.5 levels decreased from 1999 to 2012 for most US couties.
+
+```{r summary_stats}
+# Summary statistics of PM2.5 changes
+cat("\n=== PM2.5 Change Summary ===\n")
+cat("Mean PM2.5 change (2012 - 1999):", round(mean(comparison_data_complete$pm25_change, na.rm = TRUE), 3))
+
+# Count improvements vs deteriorations
+improvements <- sum(comparison_data_complete$pm25_change < 0, na.rm = TRUE)
+deteriorations <- sum(comparison_data_complete$pm25_change > 0, na.rm = TRUE)
+no_change <- sum(comparison_data_complete$pm25_change == 0, na.rm = TRUE)
+
+cat("\n=== Change Distribution ===\n")
+cat("Locations with PM2.5 reduction (improvement):", improvements, "(", round(improvements/nrow(comparison_data_complete)*100, 1), "%)\n")
+cat("Locations with PM2.5 increase (deterioration):", deteriorations, "(", round(deteriorations/nrow(comparison_data_complete)*100, 1), "%)\n")
+cat("Locations with no change:", no_change, "(", round(no_change/nrow(comparison_data_complete)*100, 1), "%)\n")
+```
+
+## Monthly Analysis
+
+For March, April and May, there is a smaller improvement.
+
+```{r monthly_analysis}
+# Analysis by month
+monthly_summary <- comparison_data_complete %>%
+  group_by(Month) %>%
+  summarise(
+    n_locations = n(),
+    mean_change = mean(pm25_change, na.rm = TRUE),
+    median_change = median(pm25_change, na.rm = TRUE),
+    improvements = sum(pm25_change < 0, na.rm = TRUE),
+    deteriorations = sum(pm25_change > 0, na.rm = TRUE),
+    .groups = 'drop'
+  ) %>%
+  arrange(Month)
+
+print(monthly_summary)
+```
+
+## Visualizations
+
+### Distribution of PM2.5 Changes
+
+```{r change_distribution}
+# Create visualization of PM2.5 changes
+p2 <- ggplot(comparison_data_complete, aes(x = pm25_change)) +
+  geom_histogram(bins = 50, fill = "steelblue", alpha = 0.7, color = "black") +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed", size = 1) +
+  labs(title = "Distribution of PM2.5 Changes (2012 minus 1999)",
+       x = "PM2.5 Change",
+       y = "Number of Locations",
+       subtitle = "Negative values indicate improvement (reduction in PM2.5)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        plot.subtitle = element_text(hjust = 0.5, size = 10),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 12))
+
+print(p2)
+
+# Save the plot
+ggsave("pm25_change_distribution.png", plot = p2, width = 12, height = 8, dpi = 300)
+```
+
+### Monthly Change Trends
+
+```{r monthly_trends}
+# Monthly change visualization
+p3 <- ggplot(monthly_summary, aes(x = Month, y = mean_change)) +
+  geom_bar(stat = "identity", fill = "steelblue", alpha = 0.7) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) +
+  scale_x_continuous(breaks = 1:12, labels = 1:12) +
+  labs(title = "Average PM2.5 Change by Month (2012 - 1999)",
+       x = "Month",
+       y = "Average PM2.5 Change",
+       subtitle = "Negative values indicate improvement (reduction in PM2.5)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        plot.subtitle = element_text(hjust = 0.5, size = 10),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 12))
+
+print(p3)
+
+# Save the plot
+ggsave("monthly_pm25_change_trends.png", plot = p3, width = 12, height = 8, dpi = 300)
+```
+
+# Geographic Analysis: County-Level Maps
+
+## Map Creation Function
+
+We map the FIPS codes to each counties, using package `usmap`. Here, we only plot the figures from January to June.
+
+```{r map_function}
+# Function to create county-level FIPS codes
+create_fips <- function(state_code, county_code) {
+  # Pad state code to 2 digits and county code to 3 digits
+  state_padded <- sprintf("%02d", as.numeric(state_code))
+  county_padded <- sprintf("%03d", as.numeric(county_code))
+  return(paste0(state_padded, county_padded))
+}
+
+# Add FIPS codes to comparison data
+comparison_data_maps <- comparison_data_complete %>%
+  mutate(fips = create_fips(State_Code, County_Code))
+
+# Filter data for January through June
+monthly_data_list <- list()
+month_names <- c("January", "February", "March", "April", "May", "June")
+
+for(i in 1:6) {
+  monthly_data_list[[i]] <- comparison_data_maps %>%
+    filter(Month == i) %>%
+    select(fips, pm25_change)
+  cat(month_names[i], "data points:", nrow(monthly_data_list[[i]]), "\n")
+}
+```
+
+## Map Visualizations
+
+For March, April, and May, the improvement in PM2.5 levels is relatively modest. A decline in PM2.5 is observed across counties in the southeastern United States between February and May. In Southern California, PM2.5 concentrations show a consistent decrease from January through June.
+
+```{r maps, fig.width=16, fig.height=10}
+# Create maps for January through June
+for(i in 1:6) {
+  if(nrow(monthly_data_list[[i]]) > 0) {
+    cat("Creating", month_names[i], "map...\n")
+    
+    p_month <- plot_usmap(
+      regions = "counties",
+      data = monthly_data_list[[i]],
+      values = "pm25_change",
+      color = "white",
+      size = 0.1
+    ) +
+      scale_fill_gradient2(
+        name = "PM2.5 Change\n(μg/m³)",
+        low = "blue",
+        mid = "white",
+        high = "red",
+        midpoint = 0,
+        na.value = "grey90",
+        limits = c(-max(abs(comparison_data_complete$pm25_change), na.rm = TRUE),
+                   max(abs(comparison_data_complete$pm25_change), na.rm = TRUE))
+      ) +
+      labs(
+        title = paste("PM2.5 Change from 1999 to 2012 -", month_names[i]),
+        subtitle = "Negative values (blue) indicate improvement (reduction in PM2.5)\nPositive values (red) indicate deterioration (increase in PM2.5)"
+      ) +
+      theme(
+        plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        plot.subtitle = element_text(hjust = 0.5, size = 12),
+        legend.position = "right",
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 10)
+      )
+    
+    print(p_month)
+    
+    # Save the map
+    filename <- paste0("pm25_change_", tolower(month_names[i]), "_map.png")
+    ggsave(filename, plot = p_month, width = 16, height = 10, dpi = 300)
+    cat(month_names[i], "map saved as", filename, "\n")
+  }
+}
+```
+
+# Conclusions
+
+Based on the analysis of PM2.5 data from 1999 to 2012, we can draw several key conclusions:
+
+1. **Overall Trend**: The analysis shows PM2.5 levels have generally decreased across different counties and months.
+
+2. **Geographic Patterns**: PM2.5 levels decline across counties in the southeastern United States from February to May, while Southern California experiences a steady reduction from January through June.
+
+3. **Seasonal Variations**: In March through May, the reduction in PM2.5 levels remains rather modest.
+
+4. **Data Limitations**: The analysis is limited to the first half of 2012 due to systematic missing data in the latter part of the year.
+
+The visualizations and statistical summaries provide a comprehensive view of air quality changes, helping to answer the research questions about PM2.5 trends and geographic distribution of improvements.
