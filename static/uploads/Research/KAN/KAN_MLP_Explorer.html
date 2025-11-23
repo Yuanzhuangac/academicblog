@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAN vs MLP Explorer</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Import Map for React & Libraries -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "recharts": "https://esm.sh/recharts@2.12.0?deps=react@18.2.0,react-dom@18.2.0",
+        "lucide-react": "https://esm.sh/lucide-react@0.330.0?deps=react@18.2.0",
+        "framer-motion": "https://esm.sh/framer-motion@11.0.3?deps=react@18.2.0"
+      }
+    }
+    </script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; }
+        /* Custom scrollbar for clearer UI */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+        import React, { useState, useEffect, useMemo, useRef } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, ComposedChart, Scatter, Legend } from 'recharts';
+        import { RefreshCw, Calculator, Grid, GitMerge, ArrowRight, Layers, Activity, MousePointer2 } from 'lucide-react';
+        import { motion, AnimatePresence } from 'framer-motion';
+
+        // --- Math Utility Functions ---
+
+        // ReLU for MLP
+        const relu = (x) => Math.max(0, x);
+        const silu = (x) => x / (1 + Math.exp(-x));
+
+        // A cubic-like spline approximation for visualization
+        const bSplineApprox = (x) => {
+            return Math.sin(x * 1.5) * Math.exp(-Math.abs(x) / 3) + 0.1 * Math.cos(x * 3);
+        };
+
+        // KAN Activation: phi(x) = w_b * silu(x) + w_s * spline(x)
+        const kanPhi = (x, wb, ws) => (wb * silu(x)) + (ws * bSplineApprox(x));
+
+        // --- MathJax Helper Component ---
+        const MathJaxFormula = ({ tex, className = "" }) => {
+            const containerRef = useRef(null);
+
+            useEffect(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    if (containerRef.current) {
+                        containerRef.current.innerHTML = `\\(${tex}\\)`;
+                        containerRef.current.style.visibility = 'hidden';
+                        window.MathJax.typesetPromise([containerRef.current]).then(() => {
+                            if (containerRef.current) containerRef.current.style.visibility = 'visible';
+                        }).catch((err) => console.log(err));
+                    }
+                } else {
+                    if (containerRef.current) {
+                        containerRef.current.innerHTML = tex;
+                    }
+                }
+            }, [tex]);
+
+            return <span ref={containerRef} className={`inline-block font-serif ${className}`} />;
+        };
+
+        // --- Components ---
+
+        const Card = ({ children, className = "" }) => (
+            <div className={`bg-slate-900/90 backdrop-blur-md border border-slate-700 rounded-xl overflow-hidden shadow-xl ${className}`}>
+                {children}
+            </div>
+        );
+
+        function KANExploration() {
+            const [activeTab, setActiveTab] = useState('combined');
+
+            const tabs = [
+                { id: 'combined', label: 'Architecture & Logic', icon: Layers },
+                { id: 'tradeoff', label: 'SiLU-Spline Tradeoff', icon: GitMerge },
+            ];
+
+            return (
+                <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-cyan-900 selection:text-white">
+                    {/* Navbar */}
+                    <nav className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur-lg">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex items-center justify-between h-16">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-cyan-500/20">K</div>
+                                    <div className="flex flex-col">
+                                        <span className="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-400">
+                                            KAN vs MLP Explorer
+                                        </span>
+                                        <span className="text-xs text-slate-500 -mt-1">(Zhang & Zhuang, 2025)</span>
+                                    </div>
+                                </div>
+                                <div className="hidden md:block">
+                                    <div className="flex items-baseline space-x-2">
+                                        {tabs.map((item) => (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => setActiveTab(item.id)}
+                                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${activeTab === item.id
+                                                        ? 'bg-slate-800 text-cyan-400 border-slate-700 shadow-md'
+                                                        : 'text-slate-400 border-transparent hover:bg-slate-900 hover:text-slate-200'
+                                                    }`}
+                                            >
+                                                <item.icon size={16} />
+                                                {item.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Content Area */}
+                    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeTab}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {activeTab === 'combined' && <CombinedArchitectureView />}
+                                {activeTab === 'tradeoff' && <PhiVisualization />}
+                            </motion.div>
+                        </AnimatePresence>
+                    </main>
+                </div>
+            );
+        }
+
+        // --- Tab 1: Combined Architecture & Calculation ---
+        const CombinedArchitectureView = () => {
+            const [inputs, setInputs] = useState({ x1: 0.5, x2: -0.5 });
+            const [hoveredNode, setHoveredNode] = useState(null); // Stores node object: {id, layer, idx} - for clicked node
+            const [hoveredNodeState, setHoveredNodeState] = useState(null); // Stores hover state for visual feedback
+            const [mode, setMode] = useState('MLP');
+            const [showMatrixForm, setShowMatrixForm] = useState(false); // Control matrix derivation display
+
+            // --- Parameters ---
+            const kanParams = useMemo(() => ({
+                l1: [
+                    [{ wb: 1.2, ws: 0.5 }, { wb: -0.5, ws: 1.2 }],
+                    [{ wb: 0.2, ws: -1.5 }, { wb: 1.5, ws: 0.2 }],
+                    [{ wb: -1.2, ws: 0.8 }, { wb: 0.5, ws: -0.5 }]
+                ],
+                l2: [
+                    { wb: 0.8, ws: 0.2 }, { wb: -0.8, ws: 1.0 }, { wb: 1.0, ws: -0.8 }
+                ]
+            }), []);
+
+            const mlpParams = useMemo(() => ({
+                w1: [[0.8, -0.5], [0.2, 1.2], [-1.0, 0.5]],
+                b1: [0.1, -0.2, 0.05],
+                w2: [0.5, -0.8, 1.0],
+                b2: 0.2
+            }), []);
+
+            // Calculate range of first layer outputs (h1, h2, h3) for dynamic x-axis in second layer
+            const firstLayerOutputRange = useMemo(() => {
+                let minH = Infinity;
+                let maxH = -Infinity;
+                
+                // Sample x1 and x2 from -3 to 3
+                for (let x1 = -3; x1 <= 3; x1 += 0.5) {
+                    for (let x2 = -3; x2 <= 3; x2 += 0.5) {
+                        // Calculate h1, h2, h3 for this input combination
+                        kanParams.l1.forEach((nodeEdges) => {
+                            const v1 = kanPhi(x1, nodeEdges[0].wb, nodeEdges[0].ws);
+                            const v2 = kanPhi(x2, nodeEdges[1].wb, nodeEdges[1].ws);
+                            const h = v1 + v2;
+                            minH = Math.min(minH, h);
+                            maxH = Math.max(maxH, h);
+                        });
+                    }
+                }
+                
+                // Add padding
+                const padding = (maxH - minH) * 0.1;
+                return { min: minH - padding, max: maxH + padding };
+            }, [kanParams]);
+
+            // --- Pre-compute and cache phi function data ---
+            const phiCacheL1 = useMemo(() => {
+                // Cache for first layer: x1 and x2 inputs for each hidden node
+                const cache = [];
+                for (let hiddenIdx = 0; hiddenIdx < 3; hiddenIdx++) {
+                    const phi1Data = [];
+                    const phi2Data = [];
+                    for (let x = -3.1; x <= 3.1; x += 0.001) {
+                        const xRounded = parseFloat(x.toFixed(3));
+                        phi1Data.push({ 
+                            x: xRounded, 
+                            phi: kanPhi(xRounded, kanParams.l1[hiddenIdx][0].wb, kanParams.l1[hiddenIdx][0].ws) 
+                        });
+                        phi2Data.push({ 
+                            x: xRounded, 
+                            phi: kanPhi(xRounded, kanParams.l1[hiddenIdx][1].wb, kanParams.l1[hiddenIdx][1].ws) 
+                        });
+                    }
+                    cache.push({ phi1: phi1Data, phi2: phi2Data });
+                }
+                return cache;
+            }, [kanParams]);
+
+            const phiCacheL2 = useMemo(() => {
+                // Cache for second layer: need to know the range first
+                const range = firstLayerOutputRange;
+                const cache = [];
+                for (let hiddenIdx = 0; hiddenIdx < 3; hiddenIdx++) {
+                    const phiData = [];
+                    for (let x = range.min; x <= range.max; x += 0.001) {
+                        const xRounded = parseFloat(x.toFixed(3));
+                        phiData.push({ 
+                            x: xRounded, 
+                            phi: kanPhi(xRounded, kanParams.l2[hiddenIdx].wb, kanParams.l2[hiddenIdx].ws) 
+                        });
+                    }
+                    cache.push(phiData);
+                }
+                return cache;
+            }, [kanParams, firstLayerOutputRange]);
+
+            // --- Calculations ---
+            const mlpHiddenPre = mlpParams.w1.map((row, i) => (row[0] * inputs.x1) + (row[1] * inputs.x2) + mlpParams.b1[i]);
+            const mlpHiddenPost = mlpHiddenPre.map(val => relu(val));
+            const mlpOutputPre = mlpHiddenPost.reduce((acc, val, i) => acc + val * mlpParams.w2[i], 0) + mlpParams.b2;
+            const mlpOutput = relu(mlpOutputPre);
+
+            const kanHiddenVals = kanParams.l1.map((nodeEdges, i) => {
+                const v1 = kanPhi(inputs.x1, nodeEdges[0].wb, nodeEdges[0].ws);
+                const v2 = kanPhi(inputs.x2, nodeEdges[1].wb, nodeEdges[1].ws);
+                return { sum: v1 + v2, v1, v2 };
+            });
+
+            const kanOutputVal = kanHiddenVals.reduce((acc, nodeVal, i) => {
+                return acc + kanPhi(nodeVal.sum, kanParams.l2[i].wb, kanParams.l2[i].ws);
+            }, 0);
+
+            // --- SVG Layout Constants ---
+            const svgW = 800;
+            const svgH = 320;
+            // Renamed nodes from n -> h
+            const nodesL0 = [{ x: 100, y: 80, id: 'x_1', label: 'x_1', val: inputs.x1 }, { x: 100, y: 220, id: 'x_2', label: 'x_2', val: inputs.x2 }];
+            const nodesL1 = [{ x: 400, y: 50, id: 'h_1', label: 'h_1' }, { x: 400, y: 150, id: 'h_2', label: 'h_2' }, { x: 400, y: 250, id: 'h_3', label: 'h_3' }];
+            const nodesL2 = [{ x: 780, y: 150, id: 'y', label: 'y' }];
+
+            // Helper to get current active node (hover takes priority, then clicked)
+            const getActiveNode = () => {
+                return hoveredNodeState || hoveredNode;
+            };
+
+            // Helper to get node for weight/bias display: hover takes priority, then clicked
+            const getWeightBiasNode = () => {
+                // If hovering, show hover's w/b; if not hovering but clicked, show clicked's w/b
+                return hoveredNodeState || hoveredNode;
+            };
+
+            // Helper to check if edge should show weight label
+            const shouldShowWeight = (l, sourceIdx, targetIdx) => {
+                const node = getWeightBiasNode();
+                if (!node) return false;
+
+                // Don't show weights/phi for input nodes (L0) - neither hover nor click
+                if (node.layer === 0) {
+                    return false;
+                }
+
+                // Hidden Node (L1): Only highlight INCOMING (L0->L1)
+                if (node.layer === 1) {
+                    return l === 0 && targetIdx === node.idx;
+                }
+
+                // Output Node (L2): Highlight INCOMING (L1->L2)
+                if (node.layer === 2) {
+                    return l === 1 && targetIdx === node.idx;
+                }
+                return false;
+            };
+
+            // Helper to check if edge is active (for visual highlighting)
+            const isEdgeActive = (l, sourceIdx, targetIdx) => {
+                const activeNode = getActiveNode();
+                if (!activeNode) return false;
+
+                // Don't highlight edges for input nodes (L0) - neither hover nor click
+                if (activeNode.layer === 0) {
+                    return false;
+                }
+
+                // Hovering Hidden Node (L1): Only highlight INCOMING (L0->L1)
+                if (activeNode.layer === 1) {
+                    return l === 0 && targetIdx === activeNode.idx;
+                }
+
+                // Hovering Output Node (L2): Highlight INCOMING (L1->L2)
+                if (activeNode.layer === 2) {
+                    return l === 1 && targetIdx === activeNode.idx;
+                }
+                return false;
+            };
+
+            const isNodeActive = (layer, idx) => {
+                const activeNode = getActiveNode();
+                if (!activeNode) return false;
+                
+                // Don't highlight anything when hovering/clicking input nodes (L0)
+                if (activeNode.layer === 0) {
+                    // Only highlight the input node itself
+                    return activeNode.layer === layer && activeNode.idx === idx;
+                }
+                
+                // Highlight self
+                if (activeNode.layer === layer && activeNode.idx === idx) return true;
+
+                // If hovering L1 node, highlight L0 sources (but NOT L2 targets)
+                if (activeNode.layer === 1) {
+                    if (layer === 0) return true;
+                }
+
+                // If hovering L2 node, highlight L1 sources
+                if (activeNode.layer === 2 && layer === 1) return true;
+
+                return false;
+            };
+
+            const getWeightLabel = (l, sIdx, tIdx) => {
+                if (mode === 'MLP') {
+                    const layerNum = l + 1;
+                    const j = tIdx + 1;
+                    const k = sIdx + 1;
+                    const val = l === 0 ? mlpParams.w1[tIdx][sIdx] : mlpParams.w2[sIdx];
+                    return `w^{(${layerNum})}_{${j},${k}} = ${val.toFixed(1)}`;
+                } else {
+                    // KAN mode: use φ_{l,i,j} notation
+                    // l: layer number (1 for L0->L1, 2 for L1->L2)
+                    // i: source node index (sIdx + 1)
+                    // j: target node index (tIdx + 1)
+                    const layerNum = l + 1;
+                    const i = sIdx + 1;
+                    const j = tIdx + 1;
+                    return `\\phi_{${layerNum},${i},${j}}`;
+                }
+            };
+
+            // Helper to get phi function parameters and input value
+            const getPhiParams = (l, sIdx, tIdx) => {
+                if (l === 0) {
+                    // L0 -> L1: from input sIdx to hidden tIdx
+                    const params = kanParams.l1[tIdx][sIdx];
+                    const inputVal = sIdx === 0 ? inputs.x1 : inputs.x2;
+                    return { wb: params.wb, ws: params.ws, inputVal, phiVal: kanPhi(inputVal, params.wb, params.ws) };
+                } else {
+                    // L1 -> L2: from hidden sIdx to output
+                    const params = kanParams.l2[sIdx];
+                    const inputVal = kanHiddenVals[sIdx].sum;
+                    return { wb: params.wb, ws: params.ws, inputVal, phiVal: kanPhi(inputVal, params.wb, params.ws) };
+                }
+            };
+
+            // Generate mini phi function thumbnail SVG
+            const renderPhiThumbnail = (l, sIdx, tIdx, centerX, centerY) => {
+                const { wb, ws, inputVal, phiVal } = getPhiParams(l, sIdx, tIdx);
+                
+                // Determine x-axis range: use dynamic range for second layer, fixed for first layer
+                let xMin, xMax;
+                if (l === 1) {
+                    // Second layer: use range based on first layer outputs
+                    xMin = firstLayerOutputRange.min;
+                    xMax = firstLayerOutputRange.max;
+                } else {
+                    // First layer: use fixed range -3 to 3
+                    xMin = -3;
+                    xMax = 3;
+                }
+                
+                // Generate phi function data points
+                const dataPoints = [];
+                const step = (xMax - xMin) / 30; // ~30 points
+                for (let x = xMin; x <= xMax; x += step) {
+                    const y = kanPhi(x, wb, ws);
+                    dataPoints.push({ x, y });
+                }
+                
+                // Find min/max for scaling with padding
+                const phiMin = Math.min(...dataPoints.map(p => p.y));
+                const phiMax = Math.max(...dataPoints.map(p => p.y));
+                const phiRange = phiMax - phiMin || 1;
+                const yPadding = phiRange * 0.1; // 10% padding
+                const yMin = phiMin - yPadding;
+                const yMax = phiMax + yPadding;
+                const yRange = yMax - yMin || 1;
+                
+                // SVG dimensions (smaller for thumbnail)
+                const svgWidth = 50;
+                const svgHeight = 35;
+                const padding = 3;
+                const plotWidth = svgWidth - 2 * padding;
+                const plotHeight = svgHeight - 2 * padding;
+                
+                // Scale functions (relative to plot area)
+                const scaleX = (val) => ((val - xMin) / (xMax - xMin)) * plotWidth;
+                const scaleY = (val) => ((yMax - val) / yRange) * plotHeight;
+                
+                // Generate path (relative to plot origin)
+                const pathData = dataPoints.map((p, idx) => {
+                    const px = scaleX(p.x);
+                    const py = scaleY(p.y);
+                    return `${idx === 0 ? 'M' : 'L'} ${px} ${py}`;
+                }).join(' ');
+                
+                // Current input point (relative to plot origin)
+                const inputX = scaleX(inputVal);
+                const inputY = scaleY(phiVal);
+                
+                // Absolute positions
+                const rectX = centerX - svgWidth / 2;
+                const rectY = centerY - svgHeight / 2;
+                const plotX = rectX + padding;
+                const plotY = rectY + padding;
+                
+                return (
+                    <g>
+                        {/* Background rectangle */}
+                        <rect x={rectX} y={rectY} width={svgWidth} height={svgHeight} fill="#0f172a" stroke="#06b6d4" strokeWidth="1" rx="2" />
+                        {/* Phi function curve */}
+                        <path d={pathData} stroke="#06b6d4" strokeWidth="1.5" fill="none" transform={`translate(${plotX}, ${plotY})`} />
+                        {/* Current input point (yellow) */}
+                        <circle cx={plotX + inputX} cy={plotY + inputY} r="2" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1" />
+                        {/* X-axis line */}
+                        <line x1={plotX} y1={rectY + svgHeight - padding} x2={rectX + svgWidth - padding} y2={rectY + svgHeight - padding} stroke="#64748b" strokeWidth="0.5" />
+                        {/* Y-axis line */}
+                        <line x1={plotX} y1={plotY} x2={plotX} y2={rectY + svgHeight - padding} stroke="#64748b" strokeWidth="0.5" />
+                    </g>
+                );
+            };
+
+            // Bias helper - returns value for hover or clicked node
+            const getBiasLabel = (layer, idx) => {
+                if (mode !== 'MLP') return null;
+                const node = getWeightBiasNode();
+                if (!node) return null;
+
+                // Don't show bias for input nodes (L0) - neither hover nor click
+                if (node.layer === 0) {
+                    return null;
+                }
+
+                // STRICT CHECK: Only show bias if this is the active node
+                if (node.layer !== layer || node.idx !== idx) return null;
+
+                const val = layer === 1 ? mlpParams.b1[idx] : mlpParams.b2;
+                const j = idx + 1;
+                return `b_{${j}} = ${val.toFixed(2)}`;
+            };
+
+            // --- Render Dynamic Formula Panel ---
+            const renderFormulaPanel = () => {
+                if (!hoveredNode) {
+                    return (
+                        <div className="flex flex-col items-center justify-center h-full text-slate-500 gap-3 pt-8">
+                            <MousePointer2 size={48} className="opacity-20 animate-bounce" />
+                            <p className="text-lg font-medium">Click any node to reveal its calculation logic</p>
+                        </div>
+                    );
+                }
+
+                const { layer, idx, id } = hoveredNode;
+
+                // Input Nodes
+                if (layer === 0) {
+                    return (
+                        <div className="flex flex-col items-center justify-center h-full">
+                            <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                                Input <MathJaxFormula tex={id} />
+                            </h3>
+                            <div className="text-2xl text-cyan-400 font-mono">
+                                Value = {inputs[`x${idx + 1}`].toFixed(2)}
+                            </div>
+                            <p className="text-slate-400 mt-2 text-sm">Raw value fed into the network.</p>
+                        </div>
+                    );
+                }
+
+                // Hidden Nodes (Layer 1)
+                if (layer === 1) {
+                    const nodeVal = mode === 'MLP' ? mlpHiddenPost[idx] : kanHiddenVals[idx].sum;
+                    const colorClass = mode === 'MLP' ? 'text-purple-400' : 'text-cyan-400';
+
+                    return (
+                        <div className="space-y-4">
+                            {mode === 'MLP' ? (
+                                <>
+                                    <div className="flex justify-between items-center border-b border-slate-700 pb-2">
+                                        <h3 className={`text-xl font-bold ${colorClass} flex items-center gap-2`}>
+                                            Calculation for <MathJaxFormula tex={id} className="text-white" />
+                                        </h3>
+                                        <span className="text-2xl text-white font-mono">= {nodeVal.toFixed(4)}</span>
+                                    </div>
+                                    <div className="bg-slate-950/50 p-4 rounded-xl border border-slate-700/50">
+                                        <div className="space-y-3">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-slate-400 text-sm font-mono w-20">Formula:</span>
+                                                <MathJaxFormula tex={`h_${idx + 1} = \\text{ReLU}\\left( \\sum_{k=1}^2 w^{(1)}_{${idx + 1},k} x_k + b^{(1)}_{${idx + 1}} \\right)`} className="text-lg text-slate-200" />
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-slate-400 text-sm font-mono w-20">Substitute:</span>
+                                                <div className="text-slate-300 font-serif italic">
+                                                    ReLU(
+                                                    <span className="text-yellow-300 mx-1">({mlpParams.w1[idx][0]})</span>·{inputs.x1.toFixed(1)} +
+                                                    <span className="text-yellow-300 mx-1">({mlpParams.w1[idx][1]})</span>·{inputs.x2.toFixed(1)} +
+                                                    <span className="text-purple-300 mx-1">{mlpParams.b1[idx]}</span>
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className="flex gap-4">
+                                        {/* Left: Calculation - Separate Block */}
+                                        <div className="flex-1 space-y-4 bg-slate-950/50 p-4 rounded-xl border-2 border-cyan-500/50">
+                                            <div className="flex justify-between items-center border-b border-slate-700 pb-2">
+                                                <h3 className={`text-xl font-bold ${colorClass} flex items-center gap-2`}>
+                                                    Calculation for <MathJaxFormula tex={id} className="text-white" />
+                                                </h3>
+                                                <span className="text-2xl text-white font-mono">= {nodeVal.toFixed(4)}</span>
+                                            </div>
+                                            <div className="space-y-3">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-slate-400 text-sm font-mono w-20">Formula:</span>
+                                                    <MathJaxFormula tex={`h_${idx + 1} = \\phi_{1,1,${idx + 1}}(x_1) + \\phi_{1,2,${idx + 1}}(x_2)`} className="text-lg text-slate-200" />
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-slate-400 text-sm font-mono w-20">Details:</span>
+                                                    <div className="text-slate-300 text-sm flex flex-col gap-1">
+                                                        <div>Each input passes through a learnable function <MathJaxFormula tex="\phi" />.</div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-slate-400 text-sm font-mono w-20">Values:</span>
+                                                    <div className="text-slate-300">
+                                                        <span className="text-cyan-300">{kanHiddenVals[idx].v1.toFixed(3)}</span> (from <MathJaxFormula tex="x_1" />) +
+                                                        <span className="text-cyan-300 ml-2">{kanHiddenVals[idx].v2.toFixed(3)}</span> (from <MathJaxFormula tex="x_2" />) =
+                                                        <span className="font-bold text-white ml-2">{nodeVal.toFixed(4)}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* Right: Phi Function Visualization - Separate Block */}
+                                        <div className="flex-1 space-y-4 bg-slate-950/50 p-4 rounded-xl border-2 border-cyan-500/50">
+                                            <div className="flex justify-between items-center border-b border-slate-700 pb-2">
+                                                <h3 className={`text-xl font-bold ${colorClass} flex items-center gap-2`}>
+                                                    <MathJaxFormula tex="\phi" /> Functions:
+                                                </h3>
+                                            </div>
+                                            <div>
+                                                {(() => {
+                                                    // Use cached data and mark only the closest point
+                                                    const phi1Cache = phiCacheL1[idx].phi1;
+                                                    const phi2Cache = phiCacheL1[idx].phi2;
+                                                    
+                                                    // Find closest point to inputs.x1
+                                                    let closestIdx1 = 0;
+                                                    let minDist1 = Math.abs(phi1Cache[0].x - inputs.x1);
+                                                    for (let i = 1; i < phi1Cache.length; i++) {
+                                                        const dist = Math.abs(phi1Cache[i].x - inputs.x1);
+                                                        if (dist < minDist1) {
+                                                            minDist1 = dist;
+                                                            closestIdx1 = i;
+                                                        }
+                                                    }
+                                                    
+                                                    // Find closest point to inputs.x2
+                                                    let closestIdx2 = 0;
+                                                    let minDist2 = Math.abs(phi2Cache[0].x - inputs.x2);
+                                                    for (let i = 1; i < phi2Cache.length; i++) {
+                                                        const dist = Math.abs(phi2Cache[i].x - inputs.x2);
+                                                        if (dist < minDist2) {
+                                                            minDist2 = dist;
+                                                            closestIdx2 = i;
+                                                        }
+                                                    }
+                                                    
+                                                    // Subsample for display (every 100th point for smooth curve)
+                                                    const phi1Data = phi1Cache.filter((_, i) => i % 100 === 0 || i === closestIdx1).map((p, i, arr) => ({
+                                                        ...p,
+                                                        isHighlight: p.x === phi1Cache[closestIdx1].x
+                                                    }));
+                                                    const phi2Data = phi2Cache.filter((_, i) => i % 100 === 0 || i === closestIdx2).map((p, i, arr) => ({
+                                                        ...p,
+                                                        isHighlight: p.x === phi2Cache[closestIdx2].x
+                                                    }));
+                                                    
+                                                    return (
+                                                        <div className="flex gap-4">
+                                                            <div className="flex-1">
+                                                                <div className="text-xs text-cyan-300 mb-1"><MathJaxFormula tex={`\\phi_{1,1,${idx + 1}}(x_1)`} /></div>
+                                                                <div className="h-32 w-full">
+                                                                    <ResponsiveContainer width="100%" height="100%">
+                                                                        <LineChart data={phi1Data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+                                                                            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                                                                            <XAxis dataKey="x" stroke="#64748b" tick={{ fontSize: 8 }} domain={[-3.1, 3.1]} />
+                                                                            <YAxis stroke="#64748b" tick={{ fontSize: 8 }} />
+                                                                            <Line 
+                                                                                type="monotone" 
+                                                                                dataKey="phi" 
+                                                                                stroke="#06b6d4" 
+                                                                                strokeWidth={2}
+                                                                                isAnimationActive={false}
+                                                                                dot={(props) => {
+                                                                                    if (props.payload.isHighlight) {
+                                                                                        return <circle cx={props.cx} cy={props.cy} r={4} fill="#fbbf24" stroke="#fbbf24" strokeWidth={1} />;
+                                                                                    }
+                                                                                    return null;
+                                                                                }}
+                                                                            />
+                                                                        </LineChart>
+                                                                    </ResponsiveContainer>
+                                                                </div>
+                                                                <div className="text-xs text-slate-400 mt-1">
+                                                                    <MathJaxFormula tex={`\\phi_{1,1,${idx + 1}}(${inputs.x1.toFixed(1)})`} /> = <span className="text-cyan-300 font-bold">{kanHiddenVals[idx].v1.toFixed(4)}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <div className="text-xs text-cyan-300 mb-1"><MathJaxFormula tex={`\\phi_{1,2,${idx + 1}}(x_2)`} /></div>
+                                                                <div className="h-32 w-full">
+                                                                    <ResponsiveContainer width="100%" height="100%">
+                                                                        <LineChart data={phi2Data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+                                                                            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                                                                            <XAxis dataKey="x" stroke="#64748b" tick={{ fontSize: 8 }} domain={[-3.1, 3.1]} />
+                                                                            <YAxis stroke="#64748b" tick={{ fontSize: 8 }} />
+                                                                            <Line 
+                                                                                type="monotone" 
+                                                                                dataKey="phi" 
+                                                                                stroke="#06b6d4" 
+                                                                                strokeWidth={2}
+                                                                                isAnimationActive={false}
+                                                                                dot={(props) => {
+                                                                                    if (props.payload.isHighlight) {
+                                                                                        return <circle cx={props.cx} cy={props.cy} r={4} fill="#fbbf24" stroke="#fbbf24" strokeWidth={1} />;
+                                                                                    }
+                                                                                    return null;
+                                                                                }}
+                                                                            />
+                                                                        </LineChart>
+                                                                    </ResponsiveContainer>
+                                                                </div>
+                                                                <div className="text-xs text-slate-400 mt-1">
+                                                                    <MathJaxFormula tex={`\\phi_{1,2,${idx + 1}}(${inputs.x2.toFixed(1)})`} /> = <span className="text-cyan-300 font-bold">{kanHiddenVals[idx].v2.toFixed(4)}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    );
+                }
+
+                // Output Node (Layer 2)
+                if (layer === 2) {
+                    const outVal = mode === 'MLP' ? mlpOutput : kanOutputVal;
+                    const colorClass = mode === 'MLP' ? 'text-purple-400' : 'text-cyan-400';
+
+                    return (
+                        <div className="space-y-4">
+                            {mode === 'MLP' ? (
+                                <>
+                                    <div className="flex justify-between items-center border-b border-slate-700 pb-2">
+                                        <h3 className={`text-xl font-bold ${colorClass} flex items-center gap-2`}>
+                                            Calculation for <MathJaxFormula tex={id} className="text-white" />
+                                        </h3>
+                                        <span className="text-2xl text-white font-mono">= {outVal.toFixed(4)}</span>
+                                    </div>
+                                    <div className="bg-slate-950/50 p-4 rounded-xl border border-slate-700/50">
+                                        <div className="space-y-3">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-slate-400 text-sm font-mono w-20">Formula:</span>
+                                                <MathJaxFormula tex={`y = \\text{ReLU}\\left( \\sum_{k=1}^3 w^{(2)}_{1,k} h_k + b^{(2)}_1 \\right)`} className="text-lg text-slate-200" />
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-slate-400 text-sm font-mono w-20">Substitute:</span>
+                                                <div className="text-slate-300 font-serif italic text-sm">
+                                                    ReLU(
+                                                    <span className="text-yellow-300">({mlpParams.w2[0]})</span>·{mlpHiddenPost[0].toFixed(2)} +
+                                                    <span className="text-yellow-300 mx-1">({mlpParams.w2[1]})</span>·{mlpHiddenPost[1].toFixed(2)} +
+                                                    <span className="text-yellow-300 mx-1">({mlpParams.w2[2]})</span>·{mlpHiddenPost[2].toFixed(2)} +
+                                                    <span className="text-purple-300 mx-1">{mlpParams.b2}</span>
+                                                    )
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-slate-400 text-sm font-mono w-20">Result:</span>
+                                                <div className="text-slate-300">
+                                                    ReLU({mlpOutputPre.toFixed(2)}) = <span className="font-bold text-white">{outVal.toFixed(4)}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className="flex gap-4">
+                                        {/* Left: Calculation - Separate Block */}
+                                        <div className="flex-1 space-y-4 bg-slate-950/50 p-4 rounded-xl border-2 border-cyan-500/50">
+                                            <div className="flex justify-between items-center border-b border-slate-700 pb-2">
+                                                <h3 className={`text-xl font-bold ${colorClass} flex items-center gap-2`}>
+                                                    Calculation for <MathJaxFormula tex={id} className="text-white" />
+                                                </h3>
+                                                <span className="text-2xl text-white font-mono">= {outVal.toFixed(4)}</span>
+                                            </div>
+                                            <div className="space-y-3">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-slate-400 text-sm font-mono w-20">Formula:</span>
+                                                    <MathJaxFormula tex={`y = \\phi_{2,1,1}(h_1) + \\phi_{2,2,1}(h_2) + \\phi_{2,3,1}(h_3)`} className="text-lg text-slate-200" />
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-slate-400 text-sm font-mono w-20">Details:</span>
+                                                    <div className="text-slate-300 text-sm flex flex-col gap-1">
+                                                        <div>Each hidden node passes through a learnable function <MathJaxFormula tex="\phi" />.</div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-slate-400 text-sm font-mono w-20">Values:</span>
+                                                    <div className="text-slate-300 text-sm">
+                                                        <div>
+                                                            <span className="text-cyan-300">{kanPhi(kanHiddenVals[0].sum, kanParams.l2[0].wb, kanParams.l2[0].ws).toFixed(3)}</span> (from <MathJaxFormula tex="h_1" />) +
+                                                            <span className="text-cyan-300 ml-2">{kanPhi(kanHiddenVals[1].sum, kanParams.l2[1].wb, kanParams.l2[1].ws).toFixed(3)}</span> (from <MathJaxFormula tex="h_2" />) +
+                                                            <span className="text-cyan-300 ml-2">{kanPhi(kanHiddenVals[2].sum, kanParams.l2[2].wb, kanParams.l2[2].ws).toFixed(3)}</span> (from <MathJaxFormula tex="h_3" />) =
+                                                            <span className="font-bold text-white ml-2">{outVal.toFixed(4)}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* Right: Phi Function Visualization - Separate Block */}
+                                        <div className="flex-1 space-y-4 bg-slate-950/50 p-4 rounded-xl border-2 border-cyan-500/50">
+                                            <div className="flex justify-between items-center border-b border-slate-700 pb-2">
+                                                <h3 className={`text-xl font-bold ${colorClass} flex items-center gap-2`}>
+                                                    <MathJaxFormula tex="\phi" /> Functions:
+                                                </h3>
+                                            </div>
+                                            <div>
+                                                {(() => {
+                                                    // Use cached data and mark only the closest point for each hidden node
+                                                    const h1Val = kanHiddenVals[0].sum;
+                                                    const h2Val = kanHiddenVals[1].sum;
+                                                    const h3Val = kanHiddenVals[2].sum;
+                                                    
+                                                    // Find closest points for each phi function
+                                                    const findClosest = (cache, targetVal) => {
+                                                        let closestIdx = 0;
+                                                        let minDist = Math.abs(cache[0].x - targetVal);
+                                                        for (let i = 1; i < cache.length; i++) {
+                                                            const dist = Math.abs(cache[i].x - targetVal);
+                                                            if (dist < minDist) {
+                                                                minDist = dist;
+                                                                closestIdx = i;
+                                                            }
+                                                        }
+                                                        return closestIdx;
+                                                    };
+                                                    
+                                                    const closest1 = findClosest(phiCacheL2[0], h1Val);
+                                                    const closest2 = findClosest(phiCacheL2[1], h2Val);
+                                                    const closest3 = findClosest(phiCacheL2[2], h3Val);
+                                                    
+                                                    // Subsample for display (every 100th point + closest point)
+                                                    const phiOut1Data = phiCacheL2[0].filter((_, i) => i % 100 === 0 || i === closest1).map(p => ({
+                                                        ...p,
+                                                        isHighlight: p.x === phiCacheL2[0][closest1].x
+                                                    }));
+                                                    const phiOut2Data = phiCacheL2[1].filter((_, i) => i % 100 === 0 || i === closest2).map(p => ({
+                                                        ...p,
+                                                        isHighlight: p.x === phiCacheL2[1][closest2].x
+                                                    }));
+                                                    const phiOut3Data = phiCacheL2[2].filter((_, i) => i % 100 === 0 || i === closest3).map(p => ({
+                                                        ...p,
+                                                        isHighlight: p.x === phiCacheL2[2][closest3].x
+                                                    }));
+                                                    
+                                                    const phi1AtH1 = kanPhi(h1Val, kanParams.l2[0].wb, kanParams.l2[0].ws);
+                                                    const phi2AtH2 = kanPhi(h2Val, kanParams.l2[1].wb, kanParams.l2[1].ws);
+                                                    const phi3AtH3 = kanPhi(h3Val, kanParams.l2[2].wb, kanParams.l2[2].ws);
+                                                    const range = firstLayerOutputRange;
+                                                    return (
+                                                        <div className="flex gap-3">
+                                                            <div className="flex-1">
+                                                                <div className="text-xs text-cyan-300 mb-1"><MathJaxFormula tex={`\\phi_{2,1,1}(h_1)`} /></div>
+                                                                <div className="h-28 w-full">
+                                                                    <ResponsiveContainer width="100%" height="100%">
+                                                                        <LineChart data={phiOut1Data} margin={{ top: 2, right: 2, left: 2, bottom: 2 }}>
+                                                                            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                                                                            <XAxis dataKey="x" stroke="#64748b" tick={{ fontSize: 7 }} domain={[range.min, range.max]} />
+                                                                            <YAxis stroke="#64748b" tick={{ fontSize: 7 }} />
+                                                                            <Line 
+                                                                                type="monotone" 
+                                                                                dataKey="phi" 
+                                                                                stroke="#06b6d4" 
+                                                                                strokeWidth={2}
+                                                                                isAnimationActive={false}
+                                                                                dot={(props) => {
+                                                                                    if (props.payload.isHighlight) {
+                                                                                        return <circle cx={props.cx} cy={props.cy} r={4} fill="#fbbf24" stroke="#fbbf24" strokeWidth={1} />;
+                                                                                    }
+                                                                                    return null;
+                                                                                }}
+                                                                            />
+                                                                        </LineChart>
+                                                                    </ResponsiveContainer>
+                                                                </div>
+                                                                <div className="text-xs text-slate-400 mt-0.5">
+                                                                    <MathJaxFormula tex={`\\phi_{2,1,1}(${h1Val.toFixed(2)})`} /> = <span className="text-cyan-300 font-bold">{phi1AtH1.toFixed(4)}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <div className="text-xs text-cyan-300 mb-1"><MathJaxFormula tex={`\\phi_{2,2,1}(h_2)`} /></div>
+                                                                <div className="h-28 w-full">
+                                                                    <ResponsiveContainer width="100%" height="100%">
+                                                                        <LineChart data={phiOut2Data} margin={{ top: 2, right: 2, left: 2, bottom: 2 }}>
+                                                                            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                                                                            <XAxis dataKey="x" stroke="#64748b" tick={{ fontSize: 7 }} domain={[range.min, range.max]} />
+                                                                            <YAxis stroke="#64748b" tick={{ fontSize: 7 }} />
+                                                                            <Line 
+                                                                                type="monotone" 
+                                                                                dataKey="phi" 
+                                                                                stroke="#06b6d4" 
+                                                                                strokeWidth={2}
+                                                                                isAnimationActive={false}
+                                                                                dot={(props) => {
+                                                                                    if (props.payload.isHighlight) {
+                                                                                        return <circle cx={props.cx} cy={props.cy} r={4} fill="#fbbf24" stroke="#fbbf24" strokeWidth={1} />;
+                                                                                    }
+                                                                                    return null;
+                                                                                }}
+                                                                            />
+                                                                        </LineChart>
+                                                                    </ResponsiveContainer>
+                                                                </div>
+                                                                <div className="text-xs text-slate-400 mt-0.5">
+                                                                    <MathJaxFormula tex={`\\phi_{2,2,1}(${h2Val.toFixed(2)})`} /> = <span className="text-cyan-300 font-bold">{phi2AtH2.toFixed(4)}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <div className="text-xs text-cyan-300 mb-1"><MathJaxFormula tex={`\\phi_{2,3,1}(h_3)`} /></div>
+                                                                <div className="h-28 w-full">
+                                                                    <ResponsiveContainer width="100%" height="100%">
+                                                                        <LineChart data={phiOut3Data} margin={{ top: 2, right: 2, left: 2, bottom: 2 }}>
+                                                                            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                                                                            <XAxis dataKey="x" stroke="#64748b" tick={{ fontSize: 7 }} domain={[range.min, range.max]} />
+                                                                            <YAxis stroke="#64748b" tick={{ fontSize: 7 }} />
+                                                                            <Line 
+                                                                                type="monotone" 
+                                                                                dataKey="phi" 
+                                                                                stroke="#06b6d4" 
+                                                                                strokeWidth={2}
+                                                                                isAnimationActive={false}
+                                                                                dot={(props) => {
+                                                                                    if (props.payload.isHighlight) {
+                                                                                        return <circle cx={props.cx} cy={props.cy} r={4} fill="#fbbf24" stroke="#fbbf24" strokeWidth={1} />;
+                                                                                    }
+                                                                                    return null;
+                                                                                }}
+                                                                            />
+                                                                        </LineChart>
+                                                                    </ResponsiveContainer>
+                                                                </div>
+                                                                <div className="text-xs text-slate-400 mt-0.5">
+                                                                    <MathJaxFormula tex={`\\phi_{2,3,1}(${h3Val.toFixed(2)})`} /> = <span className="text-cyan-300 font-bold">{phi3AtH3.toFixed(4)}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    );
+                }
+            };
+
+            return (
+                <div className="space-y-6">
+                    {/* Matrix Form Toggle Button */}
+                    {mode === 'KAN' && (
+                        <div className="flex justify-center">
+                            <button 
+                                onClick={() => setShowMatrixForm(!showMatrixForm)} 
+                                className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2"
+                            >
+                                <RefreshCw size={18} className={showMatrixForm ? 'animate-spin' : ''} />
+                                {showMatrixForm ? 'Back to Interactive View' : 'Show Matrix Form Derivation'}
+                            </button>
+                        </div>
+                    )}
+
+                    {!showMatrixForm ? (
+                        <>
+                            {/* Header & Controls */}
+                            <div className="flex flex-col md:flex-row justify-between items-end mb-4 gap-4">
+                                <div>
+                                    <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+                                        {mode === 'MLP' ? <span className="text-purple-400">MLP [2,3,1]</span> : <span className="text-cyan-400">KAN [2,3,1]</span>}
+                                        <div className="flex bg-slate-800 rounded-lg p-1 border border-slate-700">
+                                            <button onClick={() => setMode('MLP')} className={`px-3 py-1 text-xs rounded transition-all ${mode === 'MLP' ? 'bg-purple-600 text-white' : 'text-slate-400'}`}>MLP</button>
+                                            <button onClick={() => setMode('KAN')} className={`px-3 py-1 text-xs rounded transition-all ${mode === 'KAN' ? 'bg-cyan-600 text-white' : 'text-slate-400'}`}>KAN</button>
+                                        </div>
+                                    </h2>
+                                    <p className="text-slate-400 text-sm max-w-2xl">
+                                        {mode === 'MLP'
+                                            ? "MLP: Weighted sum plus bias → Nonlinear transformation by activation functions."
+                                            : "KAN places learnable non-linear functions ϕ(x) on edges. Nodes simply sum incoming signals."
+                                        }
+                                    </p>
+                                </div>
+
+                        <div className="flex gap-4 bg-slate-900 p-3 rounded-xl border border-slate-700">
+                            <div className="flex flex-col gap-1">
+                                <label className="text-xs text-slate-400 font-mono">Input x₁</label>
+                                <input type="range" min="-3" max="3" step="0.1" value={inputs.x1} onChange={e => setInputs(p => ({ ...p, x1: parseFloat(e.target.value) }))} className="accent-cyan-500 w-32" />
+                                <span className="text-right text-xs font-mono text-white">{inputs.x1.toFixed(1)}</span>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <label className="text-xs text-slate-400 font-mono">Input x₂</label>
+                                <input type="range" min="-3" max="3" step="0.1" value={inputs.x2} onChange={e => setInputs(p => ({ ...p, x2: parseFloat(e.target.value) }))} className="accent-cyan-500 w-32" />
+                                <span className="text-right text-xs font-mono text-white">{inputs.x2.toFixed(1)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Visual Topology - HTML Overlay for Nodes */}
+                    <Card className="flex items-center justify-center bg-slate-950/50 min-h-[400px] relative overflow-hidden">
+                        <div className="absolute top-4 left-4 text-xs text-slate-500 font-mono z-10">Interactive Topology View (Click Nodes for Details)</div>
+
+                        <div className="relative w-[800px] h-[380px] mt-8">
+                            {/* SVG for Edges */}
+                            <svg width="100%" height="100%" className="absolute inset-0 pointer-events-none">
+                                {/* L0 -> L1 Edges */}
+                                {nodesL0.map((n0, i) => (
+                                    nodesL1.map((n1, j) => {
+                                        const active = isEdgeActive(0, i, j);
+                                        const showWeight = shouldShowWeight(0, i, j);
+                                        const mx = (n0.x + n1.x) / 2;
+                                        const my = (n0.y + n1.y) / 2;
+                                        return (
+                                            <g key={`l0_${i}_${j}`}>
+                                                <path
+                                                    d={`M ${n0.x} ${n0.y} C ${n0.x + 100} ${n0.y}, ${n1.x - 100} ${n1.y}, ${n1.x} ${n1.y}`}
+                                                    stroke={mode === 'KAN' ? "#06b6d4" : "#a855f7"}
+                                                    strokeWidth={active ? 3 : 1}
+                                                    opacity={active ? 1 : 0.15}
+                                                    fill="none"
+                                                />
+                                                {showWeight && mode === 'KAN' && (
+                                                    <g>
+                                                        {renderPhiThumbnail(0, i, j, mx - 10, my)}
+                                                        {/* Show formulas around thumbnail when clicking hidden nodes */}
+                                                        {hoveredNode && hoveredNode.layer === 1 && hoveredNode.idx === j && (
+                                                            <>
+                                                                {/* Top formula: φ_{1,1,j} from x_1 - centered with thumbnail */}
+                                                                {i === 0 && (
+                                                                    <foreignObject x={(mx - 10) - 75} y={my - 45} width="150" height="20">
+                                                                        <div className="flex items-center justify-center h-full" style={{ overflow: 'visible' }}>
+                                                                            <span className="px-2 py-1 rounded text-xs text-cyan-200 bg-cyan-900 shadow-md whitespace-nowrap">
+                                                                                <MathJaxFormula tex={`\\phi_{1,1,${j + 1}}(x_1) = ${getPhiParams(0, 0, j).phiVal.toFixed(3)}`} />
+                                                                            </span>
+                                                                        </div>
+                                                                    </foreignObject>
+                                                                )}
+                                                                {/* Bottom formula: φ_{1,2,j} from x_2 - centered with thumbnail */}
+                                                                {i === 1 && (
+                                                                    <foreignObject x={(mx - 10) - 75} y={my + 25} width="150" height="20">
+                                                                        <div className="flex items-center justify-center h-full" style={{ overflow: 'visible' }}>
+                                                                            <span className="px-2 py-1 rounded text-xs text-cyan-200 bg-cyan-900 shadow-md whitespace-nowrap">
+                                                                                <MathJaxFormula tex={`\\phi_{1,2,${j + 1}}(x_2) = ${getPhiParams(0, 1, j).phiVal.toFixed(3)}`} />
+                                                                            </span>
+                                                                        </div>
+                                                                    </foreignObject>
+                                                                )}
+                                                            </>
+                                                        )}
+                                                    </g>
+                                                )}
+                                                {showWeight && mode === 'MLP' && (
+                                                    <foreignObject x={mx - 60} y={my - 15} width="120" height="30">
+                                                        <div className="flex justify-center items-center h-full">
+                                                            <span className="px-2 py-0.5 rounded text-xs text-white border bg-purple-900/80 border-purple-500 shadow-sm">
+                                                                <MathJaxFormula tex={getWeightLabel(0, i, j)} />
+                                                            </span>
+                                                        </div>
+                                                    </foreignObject>
+                                                )}
+                                            </g>
+                                        )
+                                    })
+                                ))}
+                                {/* L1 -> L2 Edges */}
+                                {nodesL1.map((n1, i) => (
+                                    nodesL2.map((n2, j) => {
+                                        const active = isEdgeActive(1, i, j);
+                                        const showWeight = shouldShowWeight(1, i, j);
+                                        const mx = (n1.x + n2.x) / 2;
+                                        const my = (n1.y + n2.y) / 2;
+                                        return (
+                                            <g key={`l1_${i}_${j}`}>
+                                                <path
+                                                    d={`M ${n1.x} ${n1.y} C ${n1.x + 100} ${n1.y}, ${n2.x - 100} ${n2.y}, ${n2.x} ${n2.y}`}
+                                                    stroke={mode === 'KAN' ? "#06b6d4" : "#a855f7"}
+                                                    strokeWidth={active ? 4 : 1}
+                                                    opacity={active ? 1 : 0.15}
+                                                    fill="none"
+                                                />
+                                                {showWeight && mode === 'KAN' && (
+                                                    <g>
+                                                        {renderPhiThumbnail(1, i, j, mx - 10, my)}
+                                                        {/* Show formulas around thumbnail when clicking output node */}
+                                                        {hoveredNode && hoveredNode.layer === 2 && hoveredNode.idx === j && (
+                                                            <>
+                                                                {/* Top formula: φ_{2,1,1} from h_1 - centered with thumbnail */}
+                                                                {i === 0 && (
+                                                                    <foreignObject x={(mx - 10) - 75} y={my - 45} width="150" height="20">
+                                                                        <div className="flex items-center justify-center h-full" style={{ overflow: 'visible' }}>
+                                                                            <span className="px-2 py-1 rounded text-xs text-cyan-200 bg-cyan-900 shadow-md whitespace-nowrap">
+                                                                                <MathJaxFormula tex={`\\phi_{2,1,1}(h_1) = ${getPhiParams(1, 0, j).phiVal.toFixed(3)}`} />
+                                                                            </span>
+                                                                        </div>
+                                                                    </foreignObject>
+                                                                )}
+                                                                {/* Right formula: φ_{2,2,1} from h_2 - positioned to the right of thumbnail */}
+                                                                {i === 1 && (
+                                                                    <foreignObject x={(mx - 10) + 20} y={my - 10} width="150" height="20">
+                                                                        <div className="flex items-center justify-center h-full" style={{ overflow: 'visible' }}>
+                                                                            <span className="px-2 py-1 rounded text-xs text-cyan-200 bg-cyan-900 shadow-md whitespace-nowrap">
+                                                                                <MathJaxFormula tex={`\\phi_{2,2,1}(h_2) = ${getPhiParams(1, 1, j).phiVal.toFixed(3)}`} />
+                                                                            </span>
+                                                                        </div>
+                                                                    </foreignObject>
+                                                                )}
+                                                                {/* Bottom formula: φ_{2,3,1} from h_3 - centered with thumbnail */}
+                                                                {i === 2 && (
+                                                                    <foreignObject x={(mx - 10) - 75} y={my + 25} width="150" height="20">
+                                                                        <div className="flex items-center justify-center h-full" style={{ overflow: 'visible' }}>
+                                                                            <span className="px-2 py-1 rounded text-xs text-cyan-200 bg-cyan-900 shadow-md whitespace-nowrap">
+                                                                                <MathJaxFormula tex={`\\phi_{2,3,1}(h_3) = ${getPhiParams(1, 2, j).phiVal.toFixed(3)}`} />
+                                                                            </span>
+                                                                        </div>
+                                                                    </foreignObject>
+                                                                )}
+                                                            </>
+                                                        )}
+                                                    </g>
+                                                )}
+                                                {showWeight && mode === 'MLP' && (
+                                                    <foreignObject x={mx - 60} y={my - 15} width="120" height="30">
+                                                        <div className="flex justify-center items-center h-full">
+                                                            <span className="px-2 py-0.5 rounded text-xs text-white border bg-purple-900/80 border-purple-500 shadow-sm">
+                                                                <MathJaxFormula tex={getWeightLabel(1, i, j)} />
+                                                            </span>
+                                                        </div>
+                                                    </foreignObject>
+                                                )}
+                                            </g>
+                                        )
+                                    })
+                                ))}
+                            </svg>
+
+                            {/* HTML Nodes (Interactive) */}
+                            {nodesL0.map((n, i) => {
+                                const isClicked = hoveredNode && hoveredNode.layer === 0 && hoveredNode.idx === i;
+                                return (
+                                    <div key={`n0_${i}`}>
+                                        <div
+                                            className={`absolute w-12 h-12 -ml-6 -mt-6 rounded-full bg-slate-900 border-2 flex flex-col items-center justify-center z-20 shadow-lg cursor-pointer transition-all ${isNodeActive(0, i) ? 'border-white' : 'border-slate-700'}`}
+                                            style={{ left: n.x, top: n.y }}
+                                            onMouseEnter={() => {
+                                                setHoveredNodeState({ id: n.label, layer: 0, idx: i });
+                                                // Clear clicked node when hovering a different node
+                                                if (hoveredNode && (hoveredNode.layer !== 0 || hoveredNode.idx !== i)) {
+                                                    setHoveredNode(null);
+                                                }
+                                            }}
+                                            onMouseLeave={() => setHoveredNodeState(null)}
+                                            onClick={() => {
+                                                // Toggle: if clicking the same node, clear it; otherwise set it
+                                                if (hoveredNode && hoveredNode.layer === 0 && hoveredNode.idx === i) {
+                                                    setHoveredNode(null);
+                                                } else {
+                                                    setHoveredNode({ id: n.label, layer: 0, idx: i });
+                                                }
+                                            }}
+                                        >
+                                            <div className="text-white text-sm font-bold"><MathJaxFormula tex={n.label} /></div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+
+                            {nodesL1.map((n, i) => (
+                                <div
+                                    key={`n1_${i}`}
+                                    className={`absolute w-14 h-14 -ml-7 -mt-7 rounded-full flex flex-col items-center justify-center z-20 shadow-lg cursor-pointer transition-all duration-300 border-2 ${isNodeActive(1, i) ? (mode === 'KAN' ? 'bg-cyan-950 border-cyan-400' : 'bg-purple-950 border-purple-400') : 'bg-slate-900 border-slate-700'}`}
+                                    style={{ left: n.x, top: n.y }}
+                                    onMouseEnter={() => {
+                                        setHoveredNodeState({ id: n.label, layer: 1, idx: i });
+                                        // Clear clicked node when hovering a different node
+                                        if (hoveredNode && (hoveredNode.layer !== 1 || hoveredNode.idx !== i)) {
+                                            setHoveredNode(null);
+                                        }
+                                    }}
+                                    onMouseLeave={() => setHoveredNodeState(null)}
+                                    onClick={() => {
+                                        // Toggle: if clicking the same node, clear it; otherwise set it
+                                        if (hoveredNode && hoveredNode.layer === 1 && hoveredNode.idx === i) {
+                                            setHoveredNode(null);
+                                        } else {
+                                            setHoveredNode({ id: n.label, layer: 1, idx: i });
+                                        }
+                                    }}
+                                >
+                                    <div className="text-white text-sm font-bold"><MathJaxFormula tex={n.label} /></div>
+
+                                    {/* Bias Display for MLP - Show for hover or clicked node */}
+                                    {mode === 'MLP' && getWeightBiasNode()?.layer === 1 && getWeightBiasNode()?.idx === i && (
+                                        <div className="absolute -top-9 left-1/2 -translate-x-1/2 bg-purple-900 text-purple-200 text-xs px-2 py-1 rounded border border-purple-500 whitespace-nowrap z-30 shadow-md">
+                                            <MathJaxFormula tex={getBiasLabel(1, i)} />
+                                        </div>
+                                    )}
+
+                                    {/* Activation Function Display for MLP - Show for hover or clicked node */}
+                                    {mode === 'MLP' && getWeightBiasNode()?.layer === 1 && getWeightBiasNode()?.idx === i && (
+                                        <div className="absolute top-16 left-1/2 -translate-x-1/2 bg-purple-900 text-purple-200 text-xs px-2 py-1 rounded border border-purple-500 whitespace-nowrap z-30 shadow-md">
+                                            <MathJaxFormula tex="\sigma = \text{ReLU}" />
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+
+                            {nodesL2.map((n, i) => (
+                                <div
+                                    key={`n2_${i}`}
+                                    className={`absolute w-16 h-16 -ml-8 -mt-8 rounded-full flex flex-col items-center justify-center z-20 shadow-lg cursor-pointer transition-all duration-300 border-2 ${isNodeActive(2, i) ? (mode === 'KAN' ? 'bg-cyan-950 border-cyan-400' : 'bg-purple-950 border-purple-400') : 'bg-slate-900 border-slate-700'}`}
+                                    style={{ left: n.x, top: n.y }}
+                                    onMouseEnter={() => {
+                                        setHoveredNodeState({ id: n.label, layer: 2, idx: i });
+                                        // Clear clicked node when hovering a different node
+                                        if (hoveredNode && (hoveredNode.layer !== 2 || hoveredNode.idx !== i)) {
+                                            setHoveredNode(null);
+                                        }
+                                    }}
+                                    onMouseLeave={() => setHoveredNodeState(null)}
+                                    onClick={() => {
+                                        // Toggle: if clicking the same node, clear it; otherwise set it
+                                        if (hoveredNode && hoveredNode.layer === 2 && hoveredNode.idx === i) {
+                                            setHoveredNode(null);
+                                        } else {
+                                            setHoveredNode({ id: n.label, layer: 2, idx: i });
+                                        }
+                                    }}
+                                >
+                                    <div className="text-white text-lg font-bold"><MathJaxFormula tex={n.label} /></div>
+
+                                    {/* Bias Display for MLP - Show for hover or clicked node */}
+                                    {mode === 'MLP' && getWeightBiasNode()?.layer === 2 && getWeightBiasNode()?.idx === i && (
+                                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-purple-900 text-purple-200 text-xs px-2 py-1 rounded border border-purple-500 whitespace-nowrap z-30 shadow-md">
+                                            <MathJaxFormula tex={getBiasLabel(2, i)} />
+                                        </div>
+                                    )}
+
+                                    {/* Activation Function Display for MLP - Show for hover or clicked node */}
+                                    {mode === 'MLP' && getWeightBiasNode()?.layer === 2 && getWeightBiasNode()?.idx === i && (
+                                        <div className="absolute top-20 left-1/2 -translate-x-1/2 bg-purple-900 text-purple-200 text-xs px-2 py-1 rounded border border-purple-500 whitespace-nowrap z-30 shadow-md">
+                                            <MathJaxFormula tex="\sigma = \text{ReLU}" />
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </Card>
+
+                            {/* Dynamic Calculation Panel */}
+                            <Card className={`min-h-[180px] p-6 border-l-4 transition-all duration-500 ${mode === 'KAN' ? 'border-cyan-500' : 'border-purple-500'}`}>
+                                {renderFormulaPanel()}
+                            </Card>
+                        </>
+                    ) : (
+                        <MatrixDerivation inputs={inputs} kanParams={kanParams} kanHiddenVals={kanHiddenVals} phiCacheL1={phiCacheL1} />
+                    )}
+                </div>
+            );
+        };
+
+        // --- Matrix Derivation Component ---
+        const MatrixDerivation = ({ inputs, kanParams, kanHiddenVals, phiCacheL1 }) => {
+            // Prepare phi function charts data
+            const getPhiChartData = (hiddenIdx) => {
+                const phi1Cache = phiCacheL1[hiddenIdx].phi1;
+                const phi2Cache = phiCacheL1[hiddenIdx].phi2;
+                
+                // Find closest points
+                let closestIdx1 = 0, minDist1 = Math.abs(phi1Cache[0].x - inputs.x1);
+                for (let i = 1; i < phi1Cache.length; i++) {
+                    const dist = Math.abs(phi1Cache[i].x - inputs.x1);
+                    if (dist < minDist1) { minDist1 = dist; closestIdx1 = i; }
+                }
+                let closestIdx2 = 0, minDist2 = Math.abs(phi2Cache[0].x - inputs.x2);
+                for (let i = 1; i < phi2Cache.length; i++) {
+                    const dist = Math.abs(phi2Cache[i].x - inputs.x2);
+                    if (dist < minDist2) { minDist2 = dist; closestIdx2 = i; }
+                }
+                
+                const phi1Data = phi1Cache.filter((_, i) => i % 100 === 0 || i === closestIdx1).map(p => ({
+                    ...p, isHighlight: p.x === phi1Cache[closestIdx1].x
+                }));
+                const phi2Data = phi2Cache.filter((_, i) => i % 100 === 0 || i === closestIdx2).map(p => ({
+                    ...p, isHighlight: p.x === phi2Cache[closestIdx2].x
+                }));
+
+                return { phi1Data, phi2Data };
+            };
+
+            const PhiChart = ({ data, label }) => {
+                const [showChart, setShowChart] = useState(false);
+                
+                useEffect(() => {
+                    const timer = setTimeout(() => setShowChart(true), 50);
+                    return () => clearTimeout(timer);
+                }, []);
+
+                return (
+                    <motion.div 
+                        className="flex-1" 
+                        style={{ minWidth: '60px' }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                    >
+                        <div className="h-16 w-full bg-slate-900/50 rounded border border-cyan-700/30 overflow-hidden">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <ComposedChart data={data} margin={{ top: 2, right: 2, left: 2, bottom: 2 }}>
+                                    <XAxis dataKey="x" stroke="#64748b" domain={[-3.1, 3.1]} hide />
+                                    <YAxis stroke="#64748b" hide />
+                                    <Line 
+                                        type="monotone" 
+                                        dataKey="phi" 
+                                        stroke="#06b6d4" 
+                                        strokeWidth={2} 
+                                        isAnimationActive={showChart}
+                                        animationDuration={400}
+                                        animationEasing="ease-out"
+                                        dot={false}
+                                    />
+                                    <Scatter 
+                                        dataKey="phi"
+                                        fill="#fbbf24"
+                                        isAnimationActive={showChart}
+                                        animationDuration={500}
+                                        animationDelay={300}
+                                        shape={(props) => {
+                                            if (!props.payload || !props.payload.isHighlight) return null;
+                                            return (
+                                                <motion.circle 
+                                                    cx={props.cx} 
+                                                    cy={props.cy} 
+                                                    r={3} 
+                                                    fill="#fbbf24" 
+                                                    stroke="#fbbf24" 
+                                                    strokeWidth={1}
+                                                    initial={{ scale: 0 }}
+                                                    animate={{ scale: [0, 1.5, 1] }}
+                                                    transition={{ duration: 0.3, delay: 0.6 }}
+                                                />
+                                            );
+                                        }}
+                                    />
+                                </ComposedChart>
+                            </ResponsiveContainer>
+                        </div>
+                        <div className="text-xs text-center text-slate-400 mt-1">{label}</div>
+                    </motion.div>
+                );
+            };
+
+            return (
+                <div className="space-y-8">
+                    {/* One-line Derivation Flow */}
+                    <Card className="p-8 border-2 border-cyan-500/50">
+                        <div className="flex items-center justify-center gap-4 overflow-x-auto pb-4">
+                            {/* h vector */}
+                            <motion.div 
+                                className="flex flex-col items-center min-w-fit"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.25, delay: 0.05 }}
+                            >
+                                <div className="text-2xl text-white mb-2">
+                                    <MathJaxFormula tex={`\\mathbf{h} =`} />
+                                </div>
+                            </motion.div>
+
+                            {/* [h1, h2, h3] */}
+                            <motion.div 
+                                className="flex flex-col items-center min-w-fit"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.25, delay: 0.15 }}
+                            >
+                                <div className="p-3 bg-slate-950 rounded-lg border border-cyan-700/50">
+                                    <MathJaxFormula tex={`\\begin{bmatrix} h_1 \\\\ h_2 \\\\ h_3 \\end{bmatrix}`} className="text-xl text-white" />
+                                </div>
+                            </motion.div>
+
+                            <motion.div 
+                                className="text-2xl text-cyan-400"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.15, delay: 0.25 }}
+                            >=</motion.div>
+
+                            {/* [图+图, 图+图, 图+图] */}
+                            <motion.div 
+                                className="flex flex-col items-center min-w-fit"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3, delay: 0.35 }}
+                            >
+                                <div className="p-3 bg-slate-950 rounded-lg border border-cyan-700/50">
+                                    <div className="flex flex-col gap-3">
+                                        {[0, 1, 2].map((hiddenIdx) => {
+                                            const { phi1Data, phi2Data } = getPhiChartData(hiddenIdx);
+                                            return (
+                                                <div key={hiddenIdx} className="flex items-center gap-2 p-2 bg-slate-900 rounded border border-cyan-600/20">
+                                                    <PhiChart data={phi1Data} label="" />
+                                                    <span className="text-cyan-400 text-lg font-bold">+</span>
+                                                    <PhiChart data={phi2Data} label="" />
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            <motion.div 
+                                className="text-2xl text-cyan-400"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.15, delay: 0.75 }}
+                            >=</motion.div>
+
+                            {/* Matrix representation */}
+                            <motion.div 
+                                className="flex flex-col items-center min-w-fit"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.25, delay: 0.85 }}
+                            >
+                                <div className="p-4 bg-slate-950 rounded-lg border border-cyan-700/50">
+                                    <MathJaxFormula tex={`\\begin{bmatrix} \\phi_{1,1,1}(x_1) & \\phi_{1,1,2}(x_2) \\\\ \\phi_{1,2,1}(x_1) & \\phi_{1,2,2}(x_2) \\\\ \\phi_{1,3,1}(x_1) & \\phi_{1,3,2}(x_2) \\end{bmatrix} \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}`} className="text-lg text-white" />
+                                </div>
+                            </motion.div>
+
+                            <motion.div 
+                                className="flex flex-col items-center"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.15, delay: 1.1 }}
+                            >
+                                <div className="text-2xl text-cyan-400">=</div>
+                                <div className="text-xs text-slate-500 mt-1">def</div>
+                            </motion.div>
+
+                            {/* Φ(x)·e */}
+                            <motion.div 
+                                className="flex flex-col items-center min-w-fit"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.25, delay: 1.2 }}
+                            >
+                                <div className="p-4 bg-gradient-to-r from-cyan-950 to-blue-950 rounded-lg border-2 border-cyan-500 shadow-lg">
+                                    <MathJaxFormula tex={`\\mathbf{\\Phi}(\\mathbf{x}) \\cdot \\mathbf{e}`} className="text-2xl text-white font-bold" />
+                                </div>
+                            </motion.div>
+                        </div>
+
+                        {/* MLP vs KAN Comparison */}
+                        <div className="mt-8 space-y-6">
+                            {/* MLP */}
+                            <motion.div 
+                                className="p-6 bg-purple-950/20 rounded-xl border-2 border-purple-600/50"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3, delay: 1.5 }}
+                            >
+                                <div className="mb-4">
+                                    <p className="text-lg text-slate-200">
+                                        <span className="text-purple-400 font-bold text-xl">MLP:</span> <span className="font-bold text-white">Linear transformation</span> first, followed by <span className="font-bold text-white">Non-linear transformations</span> (fixed activation functions)
+                                    </p>
+                                </div>
+                                <div className="p-6 bg-slate-950 rounded-xl border border-purple-700">
+                                    <MathJaxFormula tex={`\\text{MLP}(\\mathbf{x}) = \\sigma(\\mathbf{W}_{L-1} \\sigma(\\mathbf{W}_{L-2} \\cdots \\sigma(\\mathbf{W}_1 \\mathbf{x} + \\mathbf{b}_1) \\cdots + \\mathbf{b}_{L-2}) + \\mathbf{b}_{L-1})`} className="text-2xl text-white text-center" />
+                                </div>
+                            </motion.div>
+
+                            {/* KAN */}
+                            <motion.div 
+                                className="p-6 bg-cyan-950/20 rounded-xl border-2 border-cyan-600/50"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3, delay: 1.65 }}
+                            >
+                                <div className="mb-4">
+                                    <p className="text-lg text-slate-200">
+                                        <span className="text-cyan-400 font-bold text-xl">KAN:</span> <span className="font-bold text-white">Non-linear transformation</span> first, then <span className="font-bold text-white">sum them up</span>
+                                    </p>
+                                </div>
+                                <div className="p-6 bg-slate-950 rounded-xl border border-cyan-700">
+                                    <MathJaxFormula tex={`\\text{KAN}(\\mathbf{x}) = \\mathbf{\\Phi}_{L-1}(\\mathbf{\\Phi}_{L-2}(\\cdots \\mathbf{\\Phi}_2(\\mathbf{\\Phi}_1(\\mathbf{x}) \\cdot \\mathbf{e}_1) \\cdot \\mathbf{e}_2 \\cdots)) \\cdot \\mathbf{e}_{L-1}`} className="text-2xl text-white text-center" />
+                                </div>
+                            </motion.div>
+                        </div>
+                    </Card>
+                </div>
+            );
+        };
+
+        const PhiVisualization = () => {
+            const [wb, setWb] = useState(1.0); const [ws, setWs] = useState(0); const [xVal, setXVal] = useState(2);
+
+            const data = useMemo(() => {
+                const pts = []; for (let x = -3; x <= 3; x += 0.1) {
+                    const b = silu(x); const s = bSplineApprox(x);
+                    pts.push({ x: parseFloat(x.toFixed(1)), silu: b * wb, spline: s * ws, phi: (b * wb) + (s * ws) });
+                } return pts;
+            }, [wb, ws]);
+
+            // Custom Legend
+            const CustomLegend = ({ payload }) => (
+                <div className="flex justify-center gap-6 pb-4">
+                    {payload.map((entry, index) => (
+                        <div key={`item-${index}`} className="flex items-center gap-2">
+                            <div 
+                                style={{ 
+                                    width: '20px', 
+                                    height: entry.dataKey === 'phi' ? '4px' : '2px',
+                                    backgroundColor: entry.color,
+                                    opacity: entry.dataKey === 'phi' ? 1 : 0.8,
+                                    borderStyle: entry.dataKey === 'phi' ? 'solid' : 'dashed'
+                                }} 
+                            />
+                            <span className="text-sm">
+                                <MathJaxFormula tex={entry.value} />
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            );
+
+            return (
+                <div className="space-y-8">
+                    <div className="grid lg:grid-cols-3 gap-8">
+                        <div className="lg:col-span-2">
+                            <Card className="p-6">
+                                <h3 className="text-lg font-bold text-slate-300 mb-4 flex items-center gap-2"><GitMerge size={20} className="text-cyan-400" /> Function Visualization</h3>
+                                <div className="h-[450px] w-full flex flex-col">
+                                    <div style={{ height: '40px' }} className="flex items-center justify-center">
+                                        <CustomLegend payload={[
+                                            { value: 'w_b \\cdot \\text{SiLU}(x)', color: '#a855f7', dataKey: 'silu' },
+                                            { value: 'w_s \\cdot \\text{Spline}(x)', color: '#10b981', dataKey: 'spline' },
+                                            { value: '\\phi(x)', color: '#06b6d4', dataKey: 'phi' }
+                                        ]} />
+                                    </div>
+                                    <div className="flex-1">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <LineChart data={data} margin={{ top: 30, right: 30, left: 10, bottom: 10 }}>
+                                                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+                                                <XAxis dataKey="x" stroke="#64748b" tick={{ fontSize: 12 }} />
+                                                <YAxis stroke="#64748b" tick={{ fontSize: 12 }} />
+                                                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', color: '#f1f5f9', borderRadius: '8px' }} itemStyle={{ fontSize: '12px' }} />
+                                                <Line type="monotone" dataKey="silu" stroke="#a855f7" strokeWidth={2} dot={false} name="w_b·SiLU(x)" strokeDasharray="5 5" />
+                                                <Line type="monotone" dataKey="spline" stroke="#10b981" strokeWidth={2} dot={false} name="w_s·Spline(x)" strokeDasharray="5 5" />
+                                                <Line type="monotone" dataKey="phi" stroke="#06b6d4" strokeWidth={4} dot={false} name="φ(x)" />
+                                                <ReferenceLine x={xVal} stroke="white" strokeDasharray="3 3" label={{ value: `x=${xVal}`, position: 'top', fill: '#fff', fontSize: 12 }} />
+                                            </LineChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                    <div style={{ height: '30px' }} className="flex items-center justify-center">
+                                        <MathJaxFormula tex="x" />
+                                    </div>
+                                </div>
+                            </Card>
+                        </div>
+                        <div className="space-y-6">
+                            <Card className="p-6 border-cyan-500/30">
+                                <h3 className="text-xl font-bold mb-4 text-cyan-400">SiLU-Spline Tradeoff</h3>
+                                
+                                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 mb-8 text-center shadow-inner">
+                                    <MathJaxFormula tex={`\\phi(x) = w_b \\text{SiLU}(x) + w_s \\text{Spline}(x)`} className="text-lg text-white" />
+                                </div>
+                            
+                            <div className="space-y-8">
+                                <div>
+                                    <div className="flex justify-between text-sm font-medium text-purple-300 mb-2"><span>SiLU Weight (w_b)</span><span className="font-mono bg-purple-900/50 px-2 rounded">{wb.toFixed(2)}</span></div>
+                                    <input type="range" min="-3" max="3" step="0.1" value={wb} onChange={(e) => setWb(parseFloat(e.target.value))} className="w-full accent-purple-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
+                                </div>
+                                <div>
+                                    <div className="flex justify-between text-sm font-medium text-emerald-300 mb-2"><span>Spline Weight (w_s)</span><span className="font-mono bg-emerald-900/50 px-2 rounded">{ws.toFixed(2)}</span></div>
+                                    <input type="range" min="-3" max="3" step="0.1" value={ws} onChange={(e) => setWs(parseFloat(e.target.value))} className="w-full accent-emerald-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
+                                </div>
+                                <div className="pt-6 border-t border-slate-700">
+                                    <div className="flex justify-between text-sm font-medium text-white mb-2"><span>Input x</span><span className="font-mono">{xVal.toFixed(2)}</span></div>
+                                    <input type="range" min="-3" max="3" step="0.1" value={xVal} onChange={(e) => setXVal(parseFloat(e.target.value))} className="w-full accent-white h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer" />
+                                    <div className="mt-4 text-center p-3 bg-slate-900 rounded-lg border border-slate-700"><span className="text-slate-400 text-sm mr-2">Output:</span><span className="font-mono text-cyan-400 text-xl font-bold">φ({xVal}) = {kanPhi(xVal, wb, ws).toFixed(4)}</span></div>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
+                    </div>
+
+                    {/* Formula Explanation */}
+                    <Card className="p-8 border-2 border-cyan-500/50 bg-gradient-to-br from-slate-900 to-slate-800">
+                        <div className="mb-6 p-6 bg-slate-950 rounded-xl border-2 border-cyan-700 shadow-inner">
+                            <div className="text-center">
+                                <MathJaxFormula tex={`\\phi_{l,i,j}(a_{l,i})=w^b_{l,i,j} \\frac{a_{l,i}}{1 + e^{-a_{l,i}}} + w^s_{l,i,j} \\sum_{k=1}^{G+n} c_{l,i,j,k} B_k(a_{l,i})`} className="text-2xl text-white" />
+                            </div>
+                        </div>
+                        
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="space-y-3">
+                                <h4 className="text-lg font-bold text-cyan-400 mb-3">Learnable Parameters:</h4>
+                                <div className="space-y-2">
+                                    <div className="p-3 bg-slate-900/50 rounded-lg border border-cyan-600/30">
+                                        <MathJaxFormula tex={`w^b_{l,i,j}`} className="text-purple-400 font-bold" /> <span className="text-slate-300">- SiLU weight (trainable)</span>
+                                    </div>
+                                    <div className="p-3 bg-slate-900/50 rounded-lg border border-cyan-600/30">
+                                        <MathJaxFormula tex={`w^s_{l,i,j}`} className="text-emerald-400 font-bold" /> <span className="text-slate-300">- Spline weight (trainable)</span>
+                                    </div>
+                                    <div className="p-3 bg-slate-900/50 rounded-lg border border-cyan-600/30">
+                                        <MathJaxFormula tex={`c_{l,i,j,k}`} className="text-blue-400 font-bold" /> <span className="text-slate-300">- B-spline coefficients (trainable)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="space-y-3">
+                                <h4 className="text-lg font-bold text-cyan-400 mb-3">Key Hyperparameter:</h4>
+                                <div className="p-4 bg-gradient-to-r from-orange-950/30 to-red-950/30 rounded-lg border-2 border-orange-600/50">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <MathJaxFormula tex={`G`} className="text-3xl text-orange-400 font-bold" />
+                                        <span className="text-slate-300 text-lg">- Grid size parameter</span>
+                                    </div>
+                                    <p className="text-slate-400 text-sm mt-3">
+                                        Controls the resolution of the B-spline basis functions. Larger <MathJaxFormula tex="G" /> allows more flexible function approximation but increases computational cost.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </Card>
+                </div>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<KANExploration />);
+    </script>
+</body>
+</html>
